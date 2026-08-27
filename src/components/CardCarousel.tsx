@@ -396,23 +396,39 @@ export default function CardCarousel({
       // the smoothstep). Dense offer text (bank name, description, price) at
       // that shallow, foreshortened rotation never reads as clean — mirrored,
       // squashed, overlapping whatever's behind it — no matter how visible
-      // it is, so it needs to be gone quickly, not eased gently over the
-      // whole remaining range. Earlier attempts eased it back up partway
-      // through too, matching an outer fade that used to start separately —
-      // that let a rotated, textured card turn legible-but-ugly again mid-
-      // drift, which is exactly the "card suddenly reappears" glitch.
-      // Rotation past 90deg only ever increases from here (up to 195deg at
-      // the fully-hidden edge), so there's no reason for opacity to recover
-      // once a card is back-facing: it fades out once, fast, over a short
-      // stretch right after the flip, and then simply stays hidden for the
-      // rest of its arc into the depths.
+      // it is, so it needs to thin out fast, not ease gently over the whole
+      // remaining range. But it shouldn't vanish to nothing either: a card
+      // that drops to full 0 and stays invisible for the rest of its arc
+      // reads as popping out of existence, then popping back in once it
+      // wraps around toward becoming the next centered card. Settling at a
+      // low "ghost" floor instead — always faintly present, never gone —
+      // means the only real transition left is that ghost solidifying back
+      // into a sharp, readable card as it approaches center, exactly once,
+      // with nothing in between to look like a glitch.
       const readableUntil = 0.63;
-      const hiddenBy = 1.15;
+      const ghostBy = 1.15;
+      const ghostOpacity = 0.15;
       let opacity = 1;
       if (absOffset > readableUntil) {
-        const t = Math.min(1, (absOffset - readableUntil) / (hiddenBy - readableUntil));
+        const t = Math.min(1, (absOffset - readableUntil) / (ghostBy - readableUntil));
         const eased = t * t * (3 - 2 * t);
-        opacity = 1 - eased;
+        opacity = 1 - eased * (1 - ghostOpacity);
+      }
+
+      // The ghost floor only makes sense near center, where it's actually
+      // reading as "the next/previous card, about to solidify" — it should
+      // NOT still be lingering, even faintly, all the way out toward the
+      // far side. So it holds briefly, then eases the rest of the way down
+      // to genuinely 0 (not just faint) well before the visibility cutoff
+      // at absOffset 3.0, leaving a full stretch where the card is
+      // completely gone rather than a barely-visible trace someone can
+      // still spot.
+      const farFadeStart = 1.6;
+      const farFadeEnd = 2.0;
+      if (absOffset > farFadeStart) {
+        const tf = Math.min(1, (absOffset - farFadeStart) / (farFadeEnd - farFadeStart));
+        const easedf = tf * tf * (3 - 2 * tf);
+        opacity *= 1 - easedf;
       }
 
       let entranceScale = 1;
