@@ -2,7 +2,10 @@ import Link from "next/link";
 import AuthForm from "@/components/AuthForm";
 import { signIn } from "@/app/auth/actions";
 
-export default function LoginPage() {
+export default async function LoginPage(props: PageProps<"/auth/login">) {
+  const searchParams = await props.searchParams;
+  const confirmFailed = searchParams.error === "confirm_failed";
+
   return (
     <div className="mx-auto max-w-sm px-4 sm:px-6 py-16">
       <h1 className="font-display glow-text text-2xl text-[#f4f0ff] mb-1">Вход</h1>
@@ -12,6 +15,12 @@ export default function LoginPage() {
           Зарегистрироваться
         </Link>
       </p>
+      {confirmFailed && (
+        <p className="mb-4 text-sm text-red-400">
+          Ссылка подтверждения устарела или уже использована. Попробуйте войти — если не
+          получится, запросите новое письмо через регистрацию.
+        </p>
+      )}
       <AuthForm action={signIn} mode="login" />
     </div>
   );
