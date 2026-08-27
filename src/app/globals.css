@@ -1,0 +1,523 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Reflect Notes token system — starlit violet cosmos */
+  --color-void-canvas: #030014;
+  --color-midnight-surface: #060317;
+  --color-deep-indigo: #10093a;
+  --color-lilac-white: #f4f0ff;
+  --color-pearl: #ffffff;
+  --color-ash: #a8a6b7;
+  --color-fog: #918ea0;
+  --color-steel: #54525f;
+  --color-mercury: #cdccd0;
+  --color-dusk: #72707b;
+  --color-lavender-accent: #9382ff;
+  --color-iris: #5046e4;
+
+  --color-background: var(--color-void-canvas);
+  --color-foreground: var(--color-lilac-white);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-unbounded);
+}
+
+body {
+  background: var(--color-void-canvas);
+  color: var(--color-lilac-white);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  /* Dark-glass surface: no borders, no drop shadows — elevation reads as an
+     inset rim-light glow, per the Reflect Notes system. */
+  .liquid-glass {
+    background: var(--color-midnight-surface);
+    box-shadow:
+      inset 0 0 24px rgba(255, 255, 255, 0.04),
+      inset 0 -8px 16px rgba(80, 70, 228, 0.06),
+      0 0 26px rgba(147, 130, 255, 0.1),
+      0 0 60px rgba(80, 70, 228, 0.06);
+    position: relative;
+  }
+
+  .liquid-glass-strong {
+    background: var(--color-midnight-surface);
+    box-shadow:
+      inset 0 0 24px rgba(255, 255, 255, 0.06),
+      inset 0 -8px 18px rgba(80, 70, 228, 0.08),
+      0 0 32px rgba(147, 130, 255, 0.14),
+      0 0 72px rgba(80, 70, 228, 0.08);
+    position: relative;
+  }
+
+  .badge-glow {
+    background: var(--color-midnight-surface);
+    border: 1px solid var(--color-iris);
+    box-shadow:
+      inset 0 -7px 11px rgba(164, 143, 255, 0.12),
+      0 0 18px rgba(147, 130, 255, 0.15);
+  }
+
+  /* A deliberately bigger, softer aura for the handful of "this is the
+     frame" elements — the nav pill, the hero badge — a visible violet haze
+     bleeding outward past the border, not just an inset rim-light. */
+  .aura {
+    box-shadow:
+      0 0 24px rgba(147, 130, 255, 0.3),
+      0 0 55px rgba(147, 130, 255, 0.2),
+      0 0 100px rgba(80, 70, 228, 0.16),
+      0 0 180px rgba(80, 70, 228, 0.1),
+      0 0 280px rgba(125, 211, 255, 0.06);
+  }
+
+  .aurora-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(183, 164, 251, 0) 0%,
+      #b7a4fb 50%,
+      #8562ff 100%,
+      rgba(133, 98, 255, 0) 100%
+    );
+  }
+
+  /* Cosmic gradient — accent text and thin strokes only, never a fill. */
+  .cosmic-text {
+    background: linear-gradient(90.01deg, #e59cff 0.01%, #ba9cff 50.01%, #9cb2ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Shimmering violet-to-blue text — an animated version of .cosmic-text for
+     hero-weight accent words. Seven stops instead of five, alternating a
+     deeper indigo-violet with a richer blue, so the sheen reads as an actual
+     colour shift (dark violet drifting to dark blue) rather than a wash of
+     near-white — still light enough against the void canvas to stay legible,
+     just no longer washed out to pastel.
+     `animation: shimmer-flow ... infinite` used to run on every element with
+     this class, forever, on every route — animating `background-position` is
+     a repaint, not a cheap compositor-only transform, so this and
+     .shimmer-text-soft below were two of the biggest ambient, unconditional
+     costs on the whole site (.shimmer-text-soft alone appears dozens of
+     times per page — bank names, descriptions, "Подробнее" links on every
+     OfferCard). Same lesson as the .glow-text / glow-pulse precedent further
+     down: keep the gradient, drop the perpetual per-frame repaint. Frozen at
+     a fixed, still-legible point in the gradient instead of animating it. */
+  .shimmer-text {
+    background: linear-gradient(
+      100deg,
+      #9382ff 0%,
+      #b09aff 16%,
+      #7d8dff 33%,
+      #6fa6ff 50%,
+      #7d8dff 66%,
+      #b09aff 83%,
+      #9382ff 100%
+    );
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-position: 35% 50%;
+  }
+
+  /* Rotating conic-gradient rim — a "future style" glowing edge for a small
+     set of hero-weight elements. Applied to an element with position:relative;
+     the glow lives in ::before, clipped to a ring by mask, so it never bleeds
+     into the surface itself.
+     Same ambient-repaint issue as shimmer-flow above: animating the
+     `--glow-angle` custom property recomputes the conic-gradient every
+     frame, forever, and .glow-ring is on both the outer card and the bank
+     logo circle of every OfferCard — dozens of continuously repainting
+     elements on /offers alone. Frozen at a fixed angle; still reads as a
+     lit edge, just not a spinning one. */
+  .glow-ring {
+    position: relative;
+  }
+
+  .glow-ring::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from 45deg,
+      #9382ff,
+      #7dd3ff,
+      #5046e4,
+      #9382ff
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* A faint violet aura behind every display heading — two tight, low-opacity
+     shadow layers instead of a wide neon stack, so it reads as a subtle lift
+     off the void-canvas background rather than a glow that competes with the
+     text itself. The restrained, always-on companion to .shimmer-text. */
+  .glow-text {
+    text-shadow:
+      0 0 6px rgba(147, 130, 255, 0.18),
+      0 0 22px rgba(80, 70, 228, 0.12);
+  }
+
+  /* Body-text shimmer — same violet-to-blue flow as .shimmer-text, but the
+     gradient stays inside a light, close-value range (lilac-white through
+     pale lavender to pale blue) so contrast against the void canvas never
+     drops far enough to hurt legibility. This is what "every bit of text
+     shimmers" resolves to for paragraphs, labels, and list copy. */
+  .shimmer-text-soft {
+    background: linear-gradient(
+      100deg,
+      #d7d0ff 0%,
+      #b3a4ff 20%,
+      #9ab8ff 40%,
+      #7ea6ff 50%,
+      #9ab8ff 60%,
+      #b3a4ff 80%,
+      #d7d0ff 100%
+    );
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-position: 35% 50%;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  /* The site masthead wrapper — both lines ("GIØWAYZ" and "ZØNE") are now
+     pre-rendered chrome PNGs, so this just frames them with a drop shadow
+     and stacks them tightly. */
+  .chrome-logo-wrap {
+    position: relative;
+    display: inline-block;
+    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 14px rgba(80, 70, 228, 0.55));
+  }
+
+  .chrome-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    user-select: none;
+  }
+
+  /* A small-scale echo of the chrome-logo treatment for nav-pill labels —
+     the same white-to-deep-blue vertical sweep, but only two shadow steps
+     instead of a full bevel ladder, since at 11-13px text the heavier
+     recipe just smears into a blob (learned the hard way on "ZØNE"). Uses
+     the site's own display face (Unbounded) rather than the masthead's
+     Latin-only decorative font, since these labels are Cyrillic. */
+  .chrome-badge-text {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #eaf6ff 0%, #8bd2ff 30%, #1887ff 58%, #003a9f 82%, #71c5ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow:
+      0 1px 0 #003caa,
+      0 2px 3px rgba(0, 0, 0, 0.6),
+      0 0 6px rgba(44, 145, 255, 0.75);
+  }
+
+  /* A bright metal-tube rim — a crisp lit edge (not a soft diffuse aura)
+     for the nav bar and its pills, matching the "то что нужно" reference:
+     a glassy highlight along the top inner edge, a cooler blue shade along
+     the bottom inner edge, a thin blue outline, and a close outer glow. */
+  .chrome-frame {
+    border: 1px solid rgba(139, 210, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      inset 0 -1px 0 rgba(24, 135, 255, 0.45),
+      inset 0 0 10px rgba(24, 135, 255, 0.12),
+      0 0 10px rgba(24, 135, 255, 0.45),
+      0 0 24px rgba(0, 105, 255, 0.28);
+  }
+
+  /* Smoke drifting off the masthead — two blurred violet/indigo plumes
+     rising and fading behind the letters. Only ever transform + opacity
+     animate; the blur radius itself is static per layer, so each plume is
+     one cheap composited layer rather than a per-frame filter recompute. */
+  .brand-smoke {
+    position: relative;
+    display: inline-block;
+  }
+
+  .brand-smoke::before,
+  .brand-smoke::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 55%;
+    width: 78%;
+    height: 160%;
+    background:
+      radial-gradient(closest-side, rgba(163, 141, 255, 0.75), transparent 68%),
+      radial-gradient(closest-side, rgba(90, 78, 235, 0.6), transparent 68%);
+    background-repeat: no-repeat;
+    background-position: 26% 68%, 74% 28%;
+    background-size: 58% 58%, 46% 46%;
+    filter: blur(16px);
+    opacity: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: smoke-rise 6.5s ease-in infinite;
+  }
+
+  .brand-smoke::after {
+    width: 62%;
+    filter: blur(24px);
+    animation-delay: 3s;
+    animation-duration: 8s;
+  }
+
+  @keyframes smoke-rise {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(10%) scale(0.8);
+    }
+    20% {
+      opacity: 0.9;
+    }
+    55% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-95%) scale(1.5);
+    }
+  }
+
+  /* "Chrome" lettering — a CSS approximation of polished blue-violet metal:
+     a vertical white-to-blue gradient fill plus a tight bevel highlight/
+     shade and a low, close aura. Reserved for the nav-scale brand mark. */
+  .chrome-text {
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #e4ecff 22%,
+      #b9cdff 45%,
+      #8aa8ff 65%,
+      #5f6fe0 85%,
+      #4a4fc0 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.5),
+      0 -1px 1px rgba(5, 0, 30, 0.5),
+      0 0 10px rgba(125, 211, 255, 0.3),
+      0 0 24px rgba(80, 70, 228, 0.2);
+  }
+}
+
+@layer components {
+  /* Slow organic drift for the nebula blobs in the fixed cosmic backdrop —
+     translate + gentle scale pulse along an irregular loop so the background
+     reads as alive without ever drawing the eye like foreground motion does. */
+  @keyframes nebula-drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(4%, -6%) scale(1.08);
+    }
+    50% {
+      transform: translate(-3%, 4%) scale(0.96);
+    }
+    75% {
+      transform: translate(-6%, -3%) scale(1.05);
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+  }
+
+  .nebula-blob {
+    animation-name: nebula-drift;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  /* A sparse subset of stars breathes between its base opacity and a
+     brighter peak — opacity-only, so it composites for free. Each star
+     carries its own --twinkle-base custom property (its original random
+     opacity) so the animation returns to exactly where it started rather
+     than snapping to a shared value. */
+  @keyframes star-twinkle {
+    0%,
+    100% {
+      opacity: var(--twinkle-base, 0.4);
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .star-twinkle {
+    animation-name: star-twinkle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  /* Gentle constant bob for offer cards — small enough to read as "alive",
+     never enough to make text hard to track while reading. Give each card a
+     different animation-delay (inline style) so a whole grid doesn't bob in
+     unison like a single sheet. */
+  @keyframes card-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .card-float {
+    animation: card-float 5s ease-in-out infinite;
+  }
+
+  /* A thin diagonal light band that sweeps across a card face on a loop —
+     the "alive, gif-like" detail on top of the static gradient. Only
+     transform + opacity animate, each card's sweep gets its own compositor
+     layer, and the delay is randomized per-card (inline style) so a whole
+     grid doesn't flash in unison. */
+  .card-sheen {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .card-sheen::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -15%;
+    width: 30%;
+    height: 220%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.12) 42%,
+      rgba(201, 183, 255, 0.26) 50%,
+      rgba(255, 255, 255, 0.12) 58%,
+      transparent 100%
+    );
+    transform: translateX(-140%) rotate(8deg);
+    animation: card-sheen-sweep 7s ease-in-out infinite;
+    animation-delay: var(--sheen-delay, 0s);
+    will-change: transform, opacity;
+  }
+
+  @keyframes card-sheen-sweep {
+    0%,
+    14% {
+      transform: translateX(-140%) rotate(8deg);
+      opacity: 0;
+    }
+    24% {
+      opacity: 0.9;
+    }
+    46%,
+    100% {
+      transform: translateX(430%) rotate(8deg);
+      opacity: 0;
+    }
+  }
+
+  /* Hover lift + glow for anything clickable that isn't already using
+     .glow-ring — the "colorful, effective" transition into a card. */
+  .card-hover-glow {
+    transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .card-hover-glow:hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow:
+      0 0 0 1px rgba(147, 130, 255, 0.45),
+      0 20px 40px -12px rgba(80, 70, 228, 0.45),
+      0 0 32px rgba(147, 130, 255, 0.25);
+  }
+
+  /* Slow breathing glow — the literal "motion" companion to .glow-text for
+     the handful of hero-weight headings that should feel alive, not just
+     colored. */
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      text-shadow:
+        0 0 10px rgba(147, 130, 255, 0.4),
+        0 0 24px rgba(147, 130, 255, 0.3),
+        0 0 48px rgba(80, 70, 228, 0.22),
+        0 0 90px rgba(80, 70, 228, 0.14),
+        0 0 150px rgba(125, 211, 255, 0.08);
+    }
+    50% {
+      text-shadow:
+        0 0 14px rgba(147, 130, 255, 0.55),
+        0 0 34px rgba(147, 130, 255, 0.4),
+        0 0 64px rgba(80, 70, 228, 0.32),
+        0 0 120px rgba(80, 70, 228, 0.2),
+        0 0 200px rgba(125, 211, 255, 0.12);
+    }
+  }
+
+  /* glow-pulse above is intentionally unused as a running animation: five
+     stacked text-shadow layers repainting every frame on every heading was
+     the actual cost behind any perceived jank. The static .glow-text shadow
+     already reads as a smoky aura; keeping it non-animated keeps that look
+     essentially free. */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text,
+  .shimmer-text-soft {
+    animation: none;
+    background-position: 0% 50%;
+  }
+  .glow-ring::before {
+    animation: none;
+  }
+  .nebula-blob {
+    animation: none;
+  }
+  .star-twinkle {
+    animation: none;
+  }
+  .card-float {
+    animation: none;
+  }
+  .card-sheen::after {
+    animation: none;
+    opacity: 0;
+  }
+  .glow-text {
+    animation: none;
+  }
+  .brand-smoke::before,
+  .brand-smoke::after {
+    animation: none;
+    opacity: 0;
+  }
+}
