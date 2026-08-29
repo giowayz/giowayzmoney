@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} ${unbounded.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#030014] text-[#f4f0ff]">
+      <body className="relative min-h-full flex flex-col bg-[#030014] text-[#f4f0ff]">
         <StarField />
         <Nav />
         <main className="flex-1">{children}</main>

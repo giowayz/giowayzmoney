@@ -1,9 +1,16 @@
 // Decorative cosmic backdrop: slow-drifting violet/blue nebula blobs plus a
-// constellation of tiny stars, fixed behind the whole page. A deterministic
+// constellation of tiny stars, sitting behind the whole page. A deterministic
 // pseudo-random layout (fixed seed) keeps server and client output identical
 // without shipping thousands of literal box-shadow coordinates, and the
 // nebula motion is pure CSS (no JS, no image assets) — a "living" backdrop
 // that costs nothing to ship or animate.
+//
+// Positioned absolute (scrolling with the page), not fixed. A `position:
+// fixed` background visibly jitters against the content on mobile browsers
+// as the address bar collapses/expands during scroll — the viewport used
+// for fixed positioning and the one used for layout briefly disagree, so
+// the backdrop swims relative to everything else. `absolute` ties it to the
+// document instead, so it scrolls in lockstep with no recomposite fighting.
 function seededRandom(seed: number) {
   let value = seed;
   return () => {
@@ -37,7 +44,7 @@ const NEBULAE = [
 export default function StarField() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
+      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
       {NEBULAE.map((n, i) => (

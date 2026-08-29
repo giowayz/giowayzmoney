@@ -77,6 +77,7 @@ export default async function CabinetPage() {
             <h1 className="text-2xl font-display glow-text">
               {profile?.full_name || user.email}
             </h1>
+            <p className="text-sm shimmer-text-soft">{user.email}</p>
             <p className="text-sm shimmer-text-soft">
               Регистрация:{" "}
               {profile?.created_at

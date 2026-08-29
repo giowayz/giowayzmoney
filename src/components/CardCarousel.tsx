@@ -618,7 +618,7 @@ export default function CardCarousel({
                                 {offer.bank}
                               </div>
                               <div
-                                className="truncate whitespace-nowrap uppercase tracking-wider text-[#c9b7ff]"
+                                className="leading-tight uppercase tracking-wider text-[#c9b7ff]"
                                 style={{ fontSize: fs(12, 7) }}
                               >
                                 {CATEGORY_LABELS[offer.category]}
@@ -633,10 +633,17 @@ export default function CardCarousel({
                           </span>
                         </div>
 
-                        {/* Offer detail, middle */}
+                        {/* Offer detail, middle — the real offer copy runs up
+                            to ~110 characters ("Регистрация бизнеса,
+                            открытие и активация счёта от 3000 руб. в течение
+                            45 дней после заполнения заявки"), so a fixed
+                            2-line clamp truncated it into a "..." on longer
+                            offers. Shrinking the font for longer text and
+                            giving it more lines to grow into means the full
+                            sentence always fits instead of being cut off. */}
                         <p
-                          className="line-clamp-2 leading-snug text-white/85"
-                          style={{ fontSize: fs(12, 8) }}
+                          className="line-clamp-4 leading-snug text-white/85"
+                          style={{ fontSize: offer.action.length > 70 ? fs(10, 7) : fs(12, 8) }}
                         >
                           {offer.action}
                         </p>
@@ -710,12 +717,12 @@ export default function CardCarousel({
                     </div>
                     <div className="absolute inset-0 flex flex-col items-center justify-end pb-5 sm:pb-6 gap-1 sm:gap-1.5 z-20 text-center px-4">
                       <div
-                        className="line-clamp-2 max-w-[90%] font-mono text-[11px] sm:text-[13px] font-semibold tracking-[0.06em] text-white"
+                        className="line-clamp-3 max-w-[90%] font-mono text-[11px] sm:text-[13px] font-semibold tracking-[0.06em] text-white"
                         style={{ textShadow: "0 0 10px rgba(147,130,255,0.6)" }}
                       >
                         {offer.name}
                       </div>
-                      <div className="font-mono text-[9px] sm:text-[10px] text-[#c9b7ff] line-clamp-2 max-w-[85%]">
+                      <div className="font-mono text-[9px] sm:text-[10px] text-[#c9b7ff] line-clamp-4 max-w-[85%]">
                         {offer.action}
                       </div>
                       <div className="mt-1 flex items-center gap-3 font-mono text-[9px] sm:text-[10px] text-white/90">
