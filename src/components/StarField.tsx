@@ -48,15 +48,19 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture — the redesign's actual background image,
-          tiled and kept low-opacity so it reads as surface grain behind the
-          nebula glow and card content rather than competing with either. */}
+      {/* Graffiti-wall texture — the redesign's actual background image.
+          One continuous image, not a repeating tile: tiling this specific
+          photo showed an obvious seam every 768px (the same graffiti tags
+          repeating in a visible grid), which read as "divided" rather than
+          as one backdrop. `cover` + `no-repeat` stretches it to fill the
+          page as a single sheet instead. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "768px auto",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
           opacity: 0.35,
         }}
       />
