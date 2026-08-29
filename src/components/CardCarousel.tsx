@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import { CATEGORY_LABELS, type OfferSeed } from "@/data/offers";
 import { getBankLogo } from "@/data/bankLogos";
@@ -62,6 +62,58 @@ interface CardCarouselProps {
    * showcase (the hero) — turning it on for several smaller carousels
    * stacked down a page traps the user's scroll gesture at each one. */
   captureWheel?: boolean;
+}
+
+// useLayoutEffect on the server is a no-op React warns about; the fit runs
+// only in the browser, where layout actually exists to measure.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+/**
+ * Text that is measured, not guessed: it starts at `max` px and steps the
+ * font size down until the paragraph's own content height fits the box it
+ * was given, floor `min`. The box is a `minmax(0, 1fr)` grid row, so its
+ * height is fixed by the header and price rows around it and never moves in
+ * response to the text — which is exactly what makes a single measure-and-
+ * shrink pass converge. This replaces the old fixed size + 2-line clamp,
+ * where a long offer description either ran past the card edge or got cut
+ * off behind an ellipsis.
+ */
+function AutoFitText({
+  text,
+  max,
+  min,
+  resetKey,
+  className,
+  style,
+}: {
+  text: string;
+  max: number;
+  min: number;
+  resetKey: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLParagraphElement | null>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let size = max;
+    el.style.fontSize = `${size}px`;
+    for (let guard = 0; guard < 48; guard += 1) {
+      if (size <= min) break;
+      if (el.scrollHeight <= el.clientHeight + 0.5) break;
+      size -= 0.5;
+      el.style.fontSize = `${size}px`;
+    }
+  }, [text, max, min, resetKey]);
+
+  return (
+    <p ref={ref} className={className} style={{ ...style, fontSize: max }}>
+      {text}
+    </p>
+  );
 }
 
 export default function CardCarousel({
@@ -559,6 +611,81 @@ export default function CardCarousel({
                 }
 
                 if (isFrontFace) {
+                  // ---- Type fitting -------------------------------------
+                  // Every size on this card face is derived from the card's
+                  // real pixel box, then the three rows are budgeted against
+                  // that height before anything renders. Fixed sizes plus a
+                  // 2-line clamp is what used to make copy either slide out
+                  // of the card or disappear behind an ellipsis; measuring
+                  // the rows instead means the whole text lands inside the
+                  // card at every size the carousel can render — from the
+                  // 336px hero down to the ~148px cards on a phone.
+                  //
+                  // Below ~210px a card is physically smaller than a real
+                  // credit card, so the fixed chrome (padding, row gaps, the
+                  // logo disc) shrinks to leave the copy room to breathe.
+                  const compact = metrics.cardW < 210;
+                  const pad = compact ? fs(20, 8) : fs(20, 10);
+                  const gap = compact ? fs(8, 3) : fs(8, 5);
+                  const logoSize = compact ? fs(36, 16) : fs(36, 20);
+                  // The face carries a 1px border and `box-sizing: border-box`,
+                  // so the padding box the rows actually live in is 2px
+                  // smaller than the card in each axis. Budgeting against the
+                  // outer size instead overstates the room by exactly the
+                  // amount that lets one more line sneak past the fit check.
+                  const boxW = metrics.cardW - 2;
+                  const boxH = metrics.cardH - 2;
+                  const innerW = boxW - pad * 2;
+
+                  const bankFs =
+                    offer.bank.length > 13 ? fs(14, 8) : offer.bank.length > 8 ? fs(16, 8.5) : fs(19, 9);
+                  const catFs = fs(11, 6.5);
+                  const priceLabelFs = fs(12, 7);
+                  const priceFs = fs(26, 12);
+
+                  // Header: logo disc vs. the two stacked text lines,
+                  // whichever is taller. The name wraps to a second line only
+                  // when it genuinely cannot set on one at `bankFs`.
+                  const bankLines =
+                    offer.bank.length * bankFs * 0.55 > innerW - logoSize - 10 ? 2 : 1;
+                  const headerH = Math.max(logoSize, bankFs * 1.2 * bankLines + catFs * 1.3);
+
+                  const rowsH = boxH - pad * 2 - gap * 2;
+                  const priceLabelH = priceLabelFs * 1.35;
+                  const availWith = (labelH: number) =>
+                    Math.max(12, rowsH - headerH - (labelH + priceFs * 1.05));
+
+                  // Roughly how tall this particular description sets at the
+                  // smallest size still worth reading on this card.
+                  const floorFs = compact ? 6.5 : 9;
+                  // 0.54em per character is a deliberately pessimistic mean
+                  // for this Cyrillic text at these sizes — the estimate is
+                  // only a starting point, and erring long here costs half a
+                  // point of type, while erring short costs a clipped line.
+                  const neededAt = (size: number) => {
+                    const charsPerLine = Math.max(8, Math.floor(innerW / (size * 0.54)));
+                    return Math.ceil(offer.action.length / charsPerLine) * size * (compact ? 1.2 : 1.38);
+                  };
+
+                  // "Ваша цена" is a nice-to-have: it stays as long as the
+                  // description still fits underneath it, and steps aside on
+                  // the smallest cards, where the price reads unambiguously
+                  // on its own thanks to the ₽. That's a per-card decision,
+                  // not a breakpoint — a one-line offer keeps its label on a
+                  // card where a four-line one cannot.
+                  const showPriceLabel = availWith(priceLabelH) >= neededAt(floorFs);
+                  const descAvail = availWith(showPriceLabel ? priceLabelH : 0);
+
+                  // Start the description at the largest size whose estimated
+                  // wrapped height fits `descAvail`; AutoFitText then does the
+                  // exact, measured fit in the browser from there.
+                  let descFs = fs(12.5, 8);
+                  for (let guard = 0; guard < 24 && descFs > floorFs; guard += 1) {
+                    if (neededAt(descFs) <= descAvail) break;
+                    descFs -= 0.5;
+                  }
+                  descFs = Math.round(descFs * 10) / 10;
+
                   return (
                     <Link
                       href={`/offers/${offer.slug}`}
@@ -587,95 +714,100 @@ export default function CardCarousel({
                         style={{ "--sheen-delay": sheenDelay(i) } as React.CSSProperties}
                       />
                       <div
-                        className="absolute inset-0 text-white h-full w-full font-sans z-10 flex flex-col justify-between"
-                        style={{ padding: fs(20, 10) }}
+                        className="absolute inset-0 z-10 grid h-full w-full overflow-hidden font-sans text-white"
+                        style={{
+                          padding: pad,
+                          gridTemplateRows: "auto minmax(0, 1fr) auto",
+                          rowGap: gap,
+                        }}
                       >
-                        {/* Bank identity, top */}
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2.5 min-w-0">
+                        {/* Bank identity, top. The hold badge that used to
+                            live here is gone: it was the only element
+                            competing with the bank name for this row, and on
+                            a narrow card it pushed the name into a two-line
+                            wrap that ran into the offer text below. The
+                            header now owns the card's full width. */}
+                        <div
+                            className="flex min-w-0 items-center"
+                            style={{ gap: compact ? 5 : 10 }}
+                          >
+                          <div
+                            className="flex shrink-0 items-center justify-center rounded-full bg-white p-1.5 shadow-sm"
+                            style={{ width: logoSize, height: logoSize }}
+                          >
+                            {getBankLogo(offer.bankKey) ? (
+                              <img
+                                src={getBankLogo(offer.bankKey)}
+                                alt=""
+                                className="h-full w-full object-contain"
+                                draggable={false}
+                              />
+                            ) : (
+                              <span className="text-xs font-bold text-black">
+                                {offer.bank.slice(0, 1)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            {/* Sized to the name's own length so even
+                                "Россельхозбанк" sets on one line at the card's
+                                full width — nothing here is clamped or
+                                truncated any more. */}
                             <div
-                              className="flex shrink-0 items-center justify-center rounded-full bg-white p-1.5 shadow-sm"
-                              style={{ width: fs(36, 20), height: fs(36, 20) }}
+                              className="font-display leading-tight break-words text-white"
+                              style={{
+                                textShadow: "0 0 12px rgba(147,130,255,0.7)",
+                                fontSize: bankFs,
+                              }}
                             >
-                              {getBankLogo(offer.bankKey) ? (
-                                <img
-                                  src={getBankLogo(offer.bankKey)}
-                                  alt=""
-                                  className="h-full w-full object-contain"
-                                  draggable={false}
-                                />
-                              ) : (
-                                <span className="text-xs font-bold text-black">
-                                  {offer.bank.slice(0, 1)}
-                                </span>
-                              )}
+                              {offer.bank}
                             </div>
-                            <div className="min-w-0">
-                              {/* The bank name is the one thing on this card
-                                  that must never be cut — unlike the offer
-                                  description below, it's not something a
-                                  user can infer from context. Wrapping to 2
-                                  lines instead of truncating with "…" means
-                                  even a long name like "Россельхозбанк"
-                                  always reads in full. */}
-                              <div
-                                className="line-clamp-2 font-display leading-tight text-white"
-                                style={{
-                                  textShadow: "0 0 12px rgba(147,130,255,0.7)",
-                                  fontSize: offer.bank.length > 7 ? fs(14, 8) : fs(18, 10),
-                                }}
-                              >
-                                {offer.bank}
-                              </div>
-                              <div
-                                className="leading-tight uppercase tracking-wider text-[#c9b7ff]"
-                                style={{ fontSize: fs(12, 7) }}
-                              >
-                                {CATEGORY_LABELS[offer.category]}
-                              </div>
+                            <div
+                              className="leading-tight uppercase tracking-wider break-words text-[#c9b7ff]"
+                              style={{ fontSize: catFs }}
+                            >
+                              {CATEGORY_LABELS[offer.category]}
                             </div>
                           </div>
-                          <span
-                            className="shrink-0 whitespace-nowrap rounded-[32px] bg-[#9382ff]/25 px-2.5 py-1 font-semibold text-white backdrop-blur-sm ring-1 ring-[#9382ff]/40"
-                            style={{ fontSize: fs(10, 7) }}
-                          >
-                            {offer.defaultHoldDays} дн. холд
-                          </span>
                         </div>
 
-                        {/* Offer detail, middle — secondary to the bank name
-                            above: it's fine for this to trail off with "…"
-                            on a small mobile card where a ~110-character
-                            offer description genuinely has nowhere to go.
-                            The full text is always one tap away on the
-                            offer's own page, so cutting it here costs
-                            nothing the user can't get to. */}
-                        <p
-                          className="line-clamp-2 leading-snug text-white/85"
-                          style={{ fontSize: fs(12, 8) }}
-                        >
-                          {offer.action}
-                        </p>
+                        {/* Offer detail, middle. Its type size is fitted to
+                            the space this row actually has (see descFs
+                            above), so the full description sets inside the
+                            card instead of trailing off with an ellipsis.
+                            The line clamp stays only as a hard backstop for
+                            a description longer than anything in the
+                            catalog — it can never spill past this row. */}
+                        <AutoFitText
+                          text={offer.action}
+                          max={descFs}
+                          min={6.5}
+                          resetKey={metrics.cardH}
+                          className="h-full min-h-0 overflow-hidden break-words text-white/85"
+                          style={{ lineHeight: compact ? 1.2 : 1.38 }}
+                        />
 
                         {/* Price + chip, bottom */}
                         <div className="flex items-end justify-between gap-2">
                           <div className="min-w-0">
+                            {showPriceLabel && (
+                              <div
+                                className="truncate whitespace-nowrap text-[#c9b7ff]"
+                                style={{ fontSize: priceLabelFs }}
+                              >
+                                Ваша цена
+                              </div>
+                            )}
                             <div
-                              className="truncate whitespace-nowrap text-[#c9b7ff]"
-                              style={{ fontSize: fs(12, 7) }}
-                            >
-                              Ваша цена
-                            </div>
-                            <div
-                              className="truncate whitespace-nowrap font-display tabular-nums text-white"
-                              style={{ textShadow: "0 0 18px rgba(125,211,255,0.55)", fontSize: fs(28, 14) }}
+                              className="whitespace-nowrap font-display tabular-nums leading-none text-white"
+                              style={{ textShadow: "0 0 18px rgba(125,211,255,0.55)", fontSize: priceFs }}
                             >
                               {offer.price.toLocaleString("ru-RU")} ₽
                             </div>
                           </div>
                           <svg
                             className="shrink-0 opacity-90"
-                            style={{ width: fs(29, 16), height: fs(29, 16) }}
+                            style={{ width: fs(29, 14), height: fs(29, 14) }}
                             viewBox="0 0 60 60"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -714,7 +846,17 @@ export default function CardCarousel({
                       boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15)",
                     }}
                   >
-                    <div className="absolute left-0 right-0 top-4 sm:top-5 h-7 sm:h-9 bg-black/85 backdrop-blur-md z-10 flex items-center px-4">
+                    {/* Magnetic stripe. Kept deliberately soft: sibling
+                        planes inside a `preserve-3d` scene are sorted by
+                        geometry, not z-index, so a card swinging through the
+                        centre card's plane gets split and painted across it.
+                        With the old opaque black fill (plus a backdrop blur,
+                        which forced its own compositing layer on top) that
+                        showed up as a solid bar lying over the centre card's
+                        price. A low-alpha stripe still reads as a stripe on
+                        the card back and disappears into the gradient when
+                        the planes cross. */}
+                    <div className="absolute left-0 right-0 top-4 sm:top-5 h-7 sm:h-9 bg-black/30 z-10 flex items-center px-4">
                       {getBankLogo(offer.bankKey) && (
                         <img
                           src={getBankLogo(offer.bankKey)}
@@ -738,8 +880,6 @@ export default function CardCarousel({
                         <span className="font-semibold">
                           {offer.price.toLocaleString("ru-RU")} ₽
                         </span>
-                        <span className="text-[#9382ff]">·</span>
-                        <span>холд {offer.defaultHoldDays} дн.</span>
                       </div>
                     </div>
                   </div>
