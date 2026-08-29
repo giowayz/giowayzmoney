@@ -1,4 +1,5 @@
-// Decorative cosmic backdrop: slow-drifting violet/blue nebula blobs plus a
+// Decorative backdrop: a graffiti-wall texture (the redesign's actual
+// background image) under slow-drifting violet/blue nebula blobs and a
 // constellation of tiny stars, sitting behind the whole page. A deterministic
 // pseudo-random layout (fixed seed) keeps server and client output identical
 // without shipping thousands of literal box-shadow coordinates, and the
@@ -47,6 +48,21 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
+      {/* Graffiti-wall texture — one continuous image, not a repeating
+          tile: tiling this specific photo showed an obvious seam every
+          768px (the same graffiti tags repeating in a visible grid).
+          `cover` + `no-repeat` stretches it to fill the page as a single
+          sheet instead. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/brand/bg-texture.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          opacity: 0.35,
+        }}
+      />
       {NEBULAE.map((n, i) => (
         <div
           key={i}
