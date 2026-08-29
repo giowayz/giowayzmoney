@@ -48,17 +48,19 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture — one continuous image, not a repeating
-          tile: tiling this specific photo showed an obvious seam every
-          768px (the same graffiti tags repeating in a visible grid).
-          `cover` + `no-repeat` stretches it to fill the page as a single
-          sheet instead. */}
+      {/* Graffiti-wall texture, shown at its real 1536×1024 resolution —
+          `cover` was scaling/stretching it to fill the page, distorting it
+          away from how it actually looks in the source file. Tiling at
+          native size instead of a shrunk-down size keeps every repeat
+          undistorted, and because each tile is much bigger than a typical
+          viewport, the repeat seam only shows up after scrolling well past
+          one screen, not immediately. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+          backgroundRepeat: "repeat",
+          backgroundSize: "1536px 1024px",
           backgroundPosition: "center top",
           opacity: 1,
         }}
