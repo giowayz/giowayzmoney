@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, ImageUp, Hourglass } from "lucide-react";
+import { Search, FileCheck2, Hourglass } from "lucide-react";
 
 const STEPS = [
   {
@@ -11,7 +11,7 @@ const STEPS = [
     text: "Каталог собран по категориям — РКО, регистрация бизнеса, кредитные и дебетовые карты. У каждого оффера сразу видна цена, целевое действие и срок холда, так что сравнивать варианты можно без лишних кликов.",
   },
   {
-    icon: ImageUp,
+    icon: FileCheck2,
     n: "02",
     title: "Оформи и подтверди",
     text: "Переходишь по ссылке банка, выполняешь целевое действие — открываешь счёт, оформляешь карту — и прикрепляешь скриншот подтверждения прямо в личном кабинете. Заявка сразу уходит на проверку.",
@@ -51,8 +51,10 @@ export default function HowItWorksSection() {
             className="liquid-glass rounded-2xl p-6 md:p-7"
           >
             <div className="mb-6 flex items-center justify-between">
-              <step.icon className="h-6 w-6 text-[#f4f0ff]" strokeWidth={1.5} />
-              <span className="text-2xl text-[#9382ff]">{step.n}</span>
+              <span className="icon-badge flex h-11 w-11 items-center justify-center rounded-[14px]">
+                <step.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.5} />
+              </span>
+              <span className="step-number-glow text-2xl">{step.n}</span>
             </div>
             <h3 className="font-display mb-2 text-[#f4f0ff]">{step.title}</h3>
             <p className="text-sm leading-relaxed shimmer-text-soft">{step.text}</p>

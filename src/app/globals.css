@@ -81,6 +81,37 @@ body {
     border-color: #6d5cff;
   }
 
+  /* Redesign step-number treatment — matches .step-number from the spec. */
+  .step-number-glow {
+    color: #8c7aff;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(109, 92, 255, 0.6);
+  }
+
+  /* Redesign primary CTA — matches .btn-primary from the spec exactly: a
+     transparent, glowing outline pill rather than a flat filled rectangle. */
+  .btn-glow-primary {
+    background: transparent;
+    border: 1px solid #6d5cff;
+    color: #8c7aff;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow:
+      0 0 15px rgba(109, 92, 255, 0.7),
+      0 0 30px rgba(109, 92, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow-primary:hover {
+    background: rgba(109, 92, 255, 0.15);
+    box-shadow:
+      0 0 20px rgba(109, 92, 255, 0.8),
+      0 0 40px rgba(109, 92, 255, 0.5);
+  }
+
   /* A deliberately bigger, softer aura for the handful of "this is the
      frame" elements — the nav pill, the hero badge — a visible violet haze
      bleeding outward past the border, not just an inset rim-light. */

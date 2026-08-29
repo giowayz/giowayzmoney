@@ -75,15 +75,12 @@ export default function Home() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Link
-            href="/offers"
-            className="rounded-[5px] bg-[#5046e4] px-6 py-3 font-medium text-white hover:bg-[#10093a] transition"
-          >
+          <Link href="/offers" className="btn-glow-primary text-sm">
             Смотреть все офферы
           </Link>
           <Link
             href="/cabinet"
-            className="liquid-glass rounded-[5px] px-6 py-3 font-medium text-[#f4f0ff] hover:brightness-125 transition"
+            className="liquid-glass rounded-[50px] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f0ff] hover:brightness-125 transition"
           >
             Личный кабинет
           </Link>
