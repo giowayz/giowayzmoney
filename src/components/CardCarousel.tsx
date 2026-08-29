@@ -611,9 +611,19 @@ export default function CardCarousel({
                               )}
                             </div>
                             <div className="min-w-0">
+                              {/* The bank name is the one thing on this card
+                                  that must never be cut — unlike the offer
+                                  description below, it's not something a
+                                  user can infer from context. Wrapping to 2
+                                  lines instead of truncating with "…" means
+                                  even a long name like "Россельхозбанк"
+                                  always reads in full. */}
                               <div
-                                className="truncate whitespace-nowrap font-display leading-tight text-white"
-                                style={{ textShadow: "0 0 12px rgba(147,130,255,0.7)", fontSize: fs(18, 10) }}
+                                className="line-clamp-2 font-display leading-tight text-white"
+                                style={{
+                                  textShadow: "0 0 12px rgba(147,130,255,0.7)",
+                                  fontSize: offer.bank.length > 7 ? fs(14, 8) : fs(18, 10),
+                                }}
                               >
                                 {offer.bank}
                               </div>
@@ -633,17 +643,16 @@ export default function CardCarousel({
                           </span>
                         </div>
 
-                        {/* Offer detail, middle — the real offer copy runs up
-                            to ~110 characters ("Регистрация бизнеса,
-                            открытие и активация счёта от 3000 руб. в течение
-                            45 дней после заполнения заявки"), so a fixed
-                            2-line clamp truncated it into a "..." on longer
-                            offers. Shrinking the font for longer text and
-                            giving it more lines to grow into means the full
-                            sentence always fits instead of being cut off. */}
+                        {/* Offer detail, middle — secondary to the bank name
+                            above: it's fine for this to trail off with "…"
+                            on a small mobile card where a ~110-character
+                            offer description genuinely has nowhere to go.
+                            The full text is always one tap away on the
+                            offer's own page, so cutting it here costs
+                            nothing the user can't get to. */}
                         <p
-                          className="line-clamp-4 leading-snug text-white/85"
-                          style={{ fontSize: offer.action.length > 70 ? fs(10, 7) : fs(12, 8) }}
+                          className="line-clamp-2 leading-snug text-white/85"
+                          style={{ fontSize: fs(12, 8) }}
                         >
                           {offer.action}
                         </p>
@@ -722,7 +731,7 @@ export default function CardCarousel({
                       >
                         {offer.name}
                       </div>
-                      <div className="font-mono text-[9px] sm:text-[10px] text-[#c9b7ff] line-clamp-4 max-w-[85%]">
+                      <div className="font-mono text-[9px] sm:text-[10px] text-[#c9b7ff] line-clamp-2 max-w-[85%]">
                         {offer.action}
                       </div>
                       <div className="mt-1 flex items-center gap-3 font-mono text-[9px] sm:text-[10px] text-white/90">
