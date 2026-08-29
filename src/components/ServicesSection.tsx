@@ -59,14 +59,16 @@ export default function ServicesSection() {
                   loading={i === 0 ? "eager" : "lazy"}
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <s.icon className="absolute right-6 top-6 h-8 w-8 text-[#f4f0ff]/70 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]" strokeWidth={1.5} />
+                <span className="icon-badge absolute right-6 top-6 h-10 w-10 rounded-[12px]">
+                  <s.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.5} />
+                </span>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#030014]/80 via-[#030014]/10 to-transparent" />
               </div>
               <div className="p-6 md:p-8">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-xs uppercase tracking-widest shimmer-text-soft">{s.tag}</span>
-                  <span className="liquid-glass flex h-8 w-8 items-center justify-center rounded-full">
-                    <ArrowUpRight className="h-4 w-4 text-[#9382ff]" />
+                  <span className="icon-badge flex h-8 w-8 items-center justify-center rounded-[10px]">
+                    <ArrowUpRight className="h-4 w-4 text-[#8c7aff]" />
                   </span>
                 </div>
                 <h3 className="font-display mb-3 text-xl md:text-2xl tracking-tight text-[#f4f0ff]">
