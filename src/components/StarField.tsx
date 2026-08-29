@@ -60,7 +60,7 @@ export default function StarField() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center top",
-          opacity: 0.35,
+          opacity: 1,
         }}
       />
       {NEBULAE.map((n, i) => (
