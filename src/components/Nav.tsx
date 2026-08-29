@@ -45,23 +45,29 @@ export default async function Nav() {
         <div className="hidden md:flex items-center gap-2 ml-3 min-w-0 overflow-hidden">
           <Link
             href="/offers"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-1.5 rounded-[32px] px-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
           >
-            <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-[#8bd2ff]" strokeWidth={1.75} />
+            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
+              <LayoutGrid className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            </span>
             <span className="chrome-badge-text text-xs">Все офферы</span>
           </Link>
           <Link
             href="/cabinet"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-1.5 rounded-[32px] px-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
           >
-            <UserRound className="h-3.5 w-3.5 shrink-0 text-[#8bd2ff]" strokeWidth={1.75} />
+            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
+              <UserRound className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            </span>
             <span className="chrome-badge-text text-xs">Личный кабинет</span>
           </Link>
           <Link
             href={user ? "/statistics" : "/#stats"}
-            className="chrome-frame flex h-9 shrink-0 items-center gap-1.5 rounded-[32px] px-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
           >
-            <BarChart3 className="h-3.5 w-3.5 shrink-0 text-[#8bd2ff]" strokeWidth={1.75} />
+            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
+              <BarChart3 className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            </span>
             <span className="chrome-badge-text text-xs">Статистика</span>
           </Link>
           {isAdmin && (

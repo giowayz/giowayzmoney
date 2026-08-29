@@ -60,6 +60,27 @@ body {
       0 0 18px rgba(147, 130, 255, 0.15);
   }
 
+  /* Redesign icon treatment — a small glowing squircle around each nav/
+     action icon, replacing a bare glyph floating next to its label. Values
+     match the supplied redesign spec (.nav-item) exactly: rgba(20,20,40,0.6)
+     fill, #2a2a4a border, the two-layer rgba(109,92,255,…) glow. */
+  .icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid #2a2a4a;
+    box-shadow:
+      0 0 15px rgba(109, 92, 255, 0.7),
+      0 0 30px rgba(109, 92, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .icon-badge:hover {
+    background: rgba(109, 92, 255, 0.15);
+    border-color: #6d5cff;
+  }
+
   /* A deliberately bigger, softer aura for the handful of "this is the
      frame" elements — the nav pill, the hero badge — a visible violet haze
      bleeding outward past the border, not just an inset rim-light. */
