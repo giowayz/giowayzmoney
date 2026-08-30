@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Unbounded } from "next/font/google";
+import { Manrope, Geist_Mono, Unbounded } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import StarField from "@/components/StarField";
 import "./globals.css";
 
-const geistSans = Geist({
+// Body voice: Geist was the neutral, safe default this replaced — clean but
+// deliberately characterless, which read as "ordinary" once every other
+// piece of the redesign (color, weight, glow) got more deliberate. Manrope
+// keeps the same geometric-sans family feel (works well alongside Unbounded)
+// but has real personality of its own — a bit of warmth in the curves — and
+// ships variable weight, so headings-adjacent body copy can lean semibold
+// without switching families.
+const bodySans = Manrope({
   variable: "--font-geist-sans",
   subsets: ["latin", "cyrillic"],
 });
@@ -16,12 +23,12 @@ const geistMono = Geist_Mono({
 });
 
 // The site's heading voice: a geometric, faintly technical display face with
-// full Cyrillic support — the "premium SaaS" register (think Linear, Vercel)
-// rather than a neon/gaming one, so headings read as confident and modern
-// without shouting for attention on their own.
+// full Cyrillic support. Bumped from 500 to 700 alongside the rest of the
+// redesign's "bolder, not ordinary" direction — 500 read as safe next to the
+// new heavier body weight and glow treatment.
 const unbounded = Unbounded({
   variable: "--font-unbounded",
-  weight: "500",
+  weight: "700",
   subsets: ["latin", "cyrillic"],
 });
 
@@ -34,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ru"
-      className={`${geistSans.variable} ${geistMono.variable} ${unbounded.variable} h-full antialiased`}
+      className={`${bodySans.variable} ${geistMono.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col bg-[#030014] text-[#f4f0ff]">
         <StarField />
