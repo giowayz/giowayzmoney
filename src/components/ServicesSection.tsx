@@ -37,7 +37,7 @@ export default function ServicesSection() {
         className="relative mb-10 md:mb-14 flex items-end justify-between"
       >
         <h2 className="font-display glow-text text-3xl md:text-5xl tracking-tight text-[#f4f0ff]">Что внутри</h2>
-        <span className="hidden sm:block text-sm shimmer-text-soft">Сервисы</span>
+        <span className="hidden sm:block text-sm shimmer-text-vivid">Сервисы</span>
       </motion.div>
 
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -60,21 +60,21 @@ export default function ServicesSection() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <span className="icon-badge absolute right-6 top-6 h-10 w-10 rounded-[12px]">
-                  <s.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.5} />
+                  <s.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.75} />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#030014]/80 via-[#030014]/10 to-transparent" />
               </div>
               <div className="p-6 md:p-8">
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-widest shimmer-text-soft">{s.tag}</span>
+                  <span className="text-xs uppercase tracking-widest shimmer-text-vivid">{s.tag}</span>
                   <span className="icon-badge flex h-8 w-8 items-center justify-center rounded-[10px]">
-                    <ArrowUpRight className="h-4 w-4 text-[#8c7aff]" />
+                    <ArrowUpRight className="h-4 w-4 text-[#8c7aff]" strokeWidth={1.75} />
                   </span>
                 </div>
                 <h3 className="font-display mb-3 text-xl md:text-2xl tracking-tight text-[#f4f0ff]">
                   {s.title}
                 </h3>
-                <p className="text-sm leading-relaxed shimmer-text-soft">{s.text}</p>
+                <p className="text-sm leading-relaxed shimmer-text-vivid">{s.text}</p>
               </div>
             </Link>
           </motion.div>

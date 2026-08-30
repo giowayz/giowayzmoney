@@ -12,7 +12,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="mb-4 text-sm uppercase tracking-widest shimmer-text-soft"
+          className="mb-4 text-sm uppercase tracking-widest shimmer-text-vivid"
         >
           О нас
         </motion.div>
@@ -32,7 +32,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed shimmer-text-soft sm:text-lg"
+          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed shimmer-text-vivid sm:text-lg"
         >
           Мы каждый день проверяем условия у банков-партнёров, чтобы цена и срок холда в
           карточке оффера совпадали с тем, что вы получите на самом деле. Никакой воды —

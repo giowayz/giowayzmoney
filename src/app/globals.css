@@ -68,17 +68,24 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(20, 20, 40, 0.6);
-    border: 1px solid #2a2a4a;
+    background: linear-gradient(145deg, rgba(30, 26, 58, 0.75) 0%, rgba(16, 14, 34, 0.55) 100%);
+    border: 1px solid rgba(109, 92, 255, 0.28);
     box-shadow:
-      0 0 15px rgba(109, 92, 255, 0.7),
-      0 0 30px rgba(109, 92, 255, 0.4);
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -6px 10px rgba(80, 70, 228, 0.1),
+      0 0 15px rgba(109, 92, 255, 0.55),
+      0 0 30px rgba(109, 92, 255, 0.3);
     transition: all 0.3s ease;
   }
 
   .icon-badge:hover {
-    background: rgba(109, 92, 255, 0.15);
+    background: linear-gradient(145deg, rgba(109, 92, 255, 0.22) 0%, rgba(80, 70, 228, 0.14) 100%);
     border-color: #6d5cff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      inset 0 -6px 10px rgba(80, 70, 228, 0.16),
+      0 0 20px rgba(109, 92, 255, 0.8),
+      0 0 40px rgba(109, 92, 255, 0.5);
   }
 
   /* Redesign step-number treatment — matches .step-number from the spec. */
@@ -110,6 +117,34 @@ body {
     box-shadow:
       0 0 20px rgba(109, 92, 255, 0.8),
       0 0 40px rgba(109, 92, 255, 0.5);
+  }
+
+  /* Secondary CTA — same pill shape/weight/uppercase/tracking/transition
+     language as .btn-glow-primary, but a tonal filled surface instead of a
+     transparent outline, so a secondary action (e.g. "Личный кабинет" next
+     to the primary "Смотреть все офферы") reads as secondary rather than
+     duplicating the primary button. */
+  .btn-glow-secondary {
+    background: rgba(109, 92, 255, 0.12);
+    border: 1px solid rgba(109, 92, 255, 0.5);
+    color: #f4f0ff;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow:
+      0 0 12px rgba(109, 92, 255, 0.35),
+      0 0 24px rgba(109, 92, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow-secondary:hover {
+    background: rgba(109, 92, 255, 0.22);
+    border-color: #6d5cff;
+    box-shadow:
+      0 0 18px rgba(109, 92, 255, 0.55),
+      0 0 34px rgba(109, 92, 255, 0.3);
   }
 
   /* A deliberately bigger, softer aura for the handful of "this is the
@@ -245,6 +280,38 @@ body {
     background-position: 35% 50%;
     line-height: 1.7;
     letter-spacing: 0.01em;
+  }
+
+  /* Homepage-only richer sibling of .shimmer-text-soft — same frozen-
+     position mechanic (no animation, same perf discipline as its sibling
+     above), but a more saturated gradient pulled toward the site's actual
+     brand violet instead of a near-white pastel, plus a semibold weight
+     and a small static glow companion. .shimmer-text-soft itself is left
+     untouched: it's shared by /offers, /cabinet, /statistics, forms, and
+     the global Footer — this class exists so the homepage can read bolder
+     and more colorful without silently reskinning every other page. */
+  .shimmer-text-vivid {
+    background: linear-gradient(
+      100deg,
+      #ece6ff 0%,
+      #c3adff 16%,
+      #9f83ff 33%,
+      #7ea6ff 50%,
+      #9f83ff 66%,
+      #c3adff 83%,
+      #ece6ff 100%
+    );
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-position: 35% 50%;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    font-weight: 600;
+    text-shadow:
+      0 0 4px rgba(147, 130, 255, 0.15),
+      0 0 14px rgba(80, 70, 228, 0.08);
   }
 
   /* The site masthead wrapper — both lines ("GIØWAYZ" and "ZØNE") are now
@@ -544,7 +611,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .shimmer-text,
-  .shimmer-text-soft {
+  .shimmer-text-soft,
+  .shimmer-text-vivid {
     animation: none;
     background-position: 0% 50%;
   }

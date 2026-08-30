@@ -37,7 +37,7 @@ export default function HowItWorksSection() {
         <h2 className="font-display glow-text text-3xl md:text-5xl tracking-tight text-[#f4f0ff]">
           Как это работает
         </h2>
-        <span className="hidden sm:block text-sm shimmer-text-soft">Три шага</span>
+        <span className="hidden sm:block text-sm shimmer-text-vivid">Три шага</span>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
@@ -52,12 +52,12 @@ export default function HowItWorksSection() {
           >
             <div className="mb-6 flex items-center justify-between">
               <span className="icon-badge flex h-11 w-11 items-center justify-center rounded-[14px]">
-                <step.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.5} />
+                <step.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.75} />
               </span>
               <span className="step-number-glow text-2xl">{step.n}</span>
             </div>
-            <h3 className="font-display mb-2 text-[#f4f0ff]">{step.title}</h3>
-            <p className="text-sm leading-relaxed shimmer-text-soft">{step.text}</p>
+            <h3 className="font-display mb-2 text-xl md:text-2xl tracking-tight text-[#f4f0ff]">{step.title}</h3>
+            <p className="text-sm leading-relaxed shimmer-text-vivid">{step.text}</p>
           </motion.div>
         ))}
       </div>

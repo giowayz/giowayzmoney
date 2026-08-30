@@ -66,7 +66,7 @@ export default function Home() {
           можно <span className="shimmer-text">доверять</span>.
         </h1>
 
-        <p className="max-w-2xl shimmer-text-soft text-base sm:text-lg leading-relaxed">
+        <p className="max-w-2xl shimmer-text-vivid text-base sm:text-lg leading-relaxed">
           Каталог реальных банковских офферов — РКО, регистрация бизнеса, кредитные и
           дебетовые карты — с точной ценой и условиями по каждому банку. Оформляешь оффер,
           прикрепляешь скриншот подтверждения, а дальше просто следишь, как в личном
@@ -78,10 +78,7 @@ export default function Home() {
           <Link href="/offers" className="btn-glow-primary text-sm">
             Смотреть все офферы
           </Link>
-          <Link
-            href="/cabinet"
-            className="liquid-glass rounded-[50px] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f0ff] hover:brightness-125 transition"
-          >
+          <Link href="/cabinet" className="btn-glow-secondary text-sm">
             Личный кабинет
           </Link>
         </div>
@@ -90,7 +87,7 @@ export default function Home() {
           {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
             <span
               key={key}
-              className="badge-glow rounded-[32px] px-3.5 py-1.5 text-xs shimmer-text-soft"
+              className="badge-glow rounded-[32px] px-3.5 py-1.5 text-xs shimmer-text-vivid"
             >
               {label}
             </span>
@@ -115,7 +112,7 @@ function Stat({ value, label }: { value: string | number; label: string }) {
   return (
     <div>
       <div className="font-display text-2xl sm:text-3xl text-[#f4f0ff] tabular-nums">{value}</div>
-      <div className="mt-1 text-xs shimmer-text-soft">{label}</div>
+      <div className="mt-1 text-xs shimmer-text-vivid">{label}</div>
     </div>
   );
 }
