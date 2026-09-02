@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import CardCarousel from "@/components/CardCarousel";
 import AboutSection from "@/components/AboutSection";
@@ -76,9 +77,11 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link href="/offers" className="btn-glow-primary text-sm">
+            <div className="card-sheen" style={{ "--sheen-delay": "0s" } as CSSProperties} />
             Смотреть все офферы
           </Link>
           <Link href="/cabinet" className="btn-glow-secondary text-sm">
+            <div className="card-sheen" style={{ "--sheen-delay": "0.8s" } as CSSProperties} />
             Личный кабинет
           </Link>
         </div>

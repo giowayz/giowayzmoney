@@ -1,5 +1,4 @@
-// Decorative backdrop: a graffiti-wall texture (the redesign's actual
-// background image) under slow-drifting violet/blue nebula blobs and a
+// Decorative cosmic backdrop: slow-drifting violet/blue nebula blobs plus a
 // constellation of tiny stars, sitting behind the whole page. A deterministic
 // pseudo-random layout (fixed seed) keeps server and client output identical
 // without shipping thousands of literal box-shadow coordinates, and the
@@ -48,23 +47,6 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture, shown at its real 1536×1024 resolution —
-          `cover` was scaling/stretching it to fill the page, distorting it
-          away from how it actually looks in the source file. Tiling at
-          native size instead of a shrunk-down size keeps every repeat
-          undistorted, and because each tile is much bigger than a typical
-          viewport, the repeat seam only shows up after scrolling well past
-          one screen, not immediately. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "1536px 1024px",
-          backgroundPosition: "center top",
-          opacity: 1,
-        }}
-      />
       {NEBULAE.map((n, i) => (
         <div
           key={i}

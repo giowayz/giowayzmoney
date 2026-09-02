@@ -98,6 +98,8 @@ body {
   /* Redesign primary CTA — matches .btn-primary from the spec exactly: a
      transparent, glowing outline pill rather than a flat filled rectangle. */
   .btn-glow-primary {
+    position: relative;
+    overflow: hidden;
     background: transparent;
     border: 1px solid #6d5cff;
     color: #8c7aff;
@@ -125,6 +127,8 @@ body {
      to the primary "Смотреть все офферы") reads as secondary rather than
      duplicating the primary button. */
   .btn-glow-secondary {
+    position: relative;
+    overflow: hidden;
     background: rgba(109, 92, 255, 0.12);
     border: 1px solid rgba(109, 92, 255, 0.5);
     color: #f4f0ff;

@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { Search, FileCheck2, Hourglass } from "lucide-react";
 
@@ -48,8 +49,9 @@ export default function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: i * 0.12 }}
-            className="liquid-glass rounded-2xl p-6 md:p-7"
+            className="liquid-glass relative overflow-hidden rounded-2xl p-6 md:p-7"
           >
+            <div className="card-sheen" style={{ "--sheen-delay": `${i * 1.1}s` } as CSSProperties} />
             <div className="mb-6 flex items-center justify-between">
               <span className="icon-badge flex h-11 w-11 items-center justify-center rounded-[14px]">
                 <step.icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.75} />

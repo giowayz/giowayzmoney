@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
-import { Manrope, Geist_Mono, Unbounded } from "next/font/google";
+import { Inter, Geist_Mono, Unbounded } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import StarField from "@/components/StarField";
 import "./globals.css";
 
-// Body voice: Geist was the neutral, safe default this replaced — clean but
-// deliberately characterless, which read as "ordinary" once every other
-// piece of the redesign (color, weight, glow) got more deliberate. Manrope
-// keeps the same geometric-sans family feel (works well alongside Unbounded)
-// but has real personality of its own — a bit of warmth in the curves — and
-// ships variable weight, so headings-adjacent body copy can lean semibold
-// without switching families.
-const bodySans = Manrope({
+// Body voice: went Geist -> Manrope -> here. Manrope read as too soft/
+// rounded for a site handling money and account data — "красивый" (nice)
+// but not "бизнесовый" (business-like). Inter is the de facto body face of
+// premium SaaS (Linear, Vercel, Stripe all ship it) — tighter, more neutral
+// letterforms that read as trustworthy/professional at body-copy sizes,
+// while still taking a semibold weight cleanly for the vivid-text treatment.
+const bodySans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin", "cyrillic"],
 });

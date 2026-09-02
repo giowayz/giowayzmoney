@@ -27,10 +27,10 @@ export default async function Nav() {
   }
 
   return (
-    <header className="sticky top-0 z-50 px-4 sm:px-6 pt-4 sm:pt-6">
-      <nav className="chrome-frame liquid-glass mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full px-5 sm:px-6 py-2">
+    <header className="sticky top-0 z-50 px-3 sm:px-6 pt-4 sm:pt-6">
+      <nav className="chrome-frame liquid-glass mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-4 rounded-full px-3 sm:px-6 py-2">
         <Link href="/" className="flex items-center shrink-0">
-          <span className="chrome-frame relative h-9 w-9 shrink-0 rounded-[6px] sm:h-10 sm:w-10 overflow-hidden">
+          <span className="chrome-frame relative h-8 w-8 shrink-0 rounded-[6px] sm:h-10 sm:w-10 overflow-hidden">
             <Image
               src="/brand/logo-giowayz.jpg"
               alt="Giowayz"
@@ -42,38 +42,43 @@ export default async function Nav() {
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-2 ml-3 min-w-0 overflow-hidden">
+        {/* Icon-badge + label on md+; label collapses away below md so the
+            three tabs still fit (and stay tappable) on a phone-width bar —
+            they used to be `hidden md:flex` here, invisible on mobile
+            entirely, which is exactly the "веб версия для телефона" the
+            site is built for first. */}
+        <div className="flex items-center gap-1 sm:gap-2 ml-0.5 sm:ml-3 min-w-0 overflow-hidden">
           <Link
             href="/offers"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-8 sm:h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1 pr-1 md:pl-1.5 md:pr-3.5 transition hover:brightness-125"
           >
-            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
-              <LayoutGrid className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            <span className="icon-badge h-5 w-5 sm:h-6 sm:w-6 shrink-0 rounded-[8px]">
+              <LayoutGrid className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
             </span>
-            <span className="chrome-badge-text text-xs">Все офферы</span>
+            <span className="hidden md:inline chrome-badge-text text-xs">Все офферы</span>
           </Link>
           <Link
             href="/cabinet"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-8 sm:h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1 pr-1 md:pl-1.5 md:pr-3.5 transition hover:brightness-125"
           >
-            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
-              <UserRound className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            <span className="icon-badge h-5 w-5 sm:h-6 sm:w-6 shrink-0 rounded-[8px]">
+              <UserRound className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
             </span>
-            <span className="chrome-badge-text text-xs">Личный кабинет</span>
+            <span className="hidden md:inline chrome-badge-text text-xs">Личный кабинет</span>
           </Link>
           <Link
             href={user ? "/statistics" : "/#stats"}
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-8 sm:h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1 pr-1 md:pl-1.5 md:pr-3.5 transition hover:brightness-125"
           >
-            <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
-              <BarChart3 className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
+            <span className="icon-badge h-5 w-5 sm:h-6 sm:w-6 shrink-0 rounded-[8px]">
+              <BarChart3 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
             </span>
-            <span className="chrome-badge-text text-xs">Статистика</span>
+            <span className="hidden md:inline chrome-badge-text text-xs">Статистика</span>
           </Link>
           {isAdmin && (
             <Link
               href="/admin"
-              className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] px-3.5 transition hover:brightness-125"
+              className="chrome-frame hidden md:flex h-9 shrink-0 items-center rounded-[32px] px-3.5 transition hover:brightness-125"
             >
               <span className="chrome-badge-text text-xs">Админ</span>
             </Link>
@@ -83,13 +88,10 @@ export default async function Nav() {
         <div className="flex items-center gap-3 shrink-0">
           {user ? (
             <>
-              <Link href="/cabinet" className="hidden sm:inline md:hidden hover:brightness-125 transition">
-                <span className="chrome-badge-text text-xs">Кабинет</span>
-              </Link>
               <form action={signOut}>
                 <button
                   type="submit"
-                  className="chrome-frame flex h-9 items-center rounded-[32px] px-4 hover:brightness-125 transition"
+                  className="chrome-frame flex h-8 sm:h-9 items-center rounded-[32px] px-3 sm:px-4 hover:brightness-125 transition"
                 >
                   <span className="chrome-badge-text text-xs">Выйти</span>
                 </button>
@@ -102,7 +104,7 @@ export default async function Nav() {
               </Link>
               <Link
                 href="/auth/register"
-                className="chrome-frame flex h-9 items-center rounded-[32px] bg-[#0b1a4a] px-4 hover:brightness-125 transition"
+                className="chrome-frame flex h-8 sm:h-9 items-center rounded-[32px] bg-[#0b1a4a] px-3 sm:px-4 hover:brightness-125 transition"
               >
                 <span className="chrome-badge-text text-xs">Регистрация</span>
               </Link>
