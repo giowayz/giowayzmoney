@@ -216,6 +216,37 @@ body {
     background-position: 35% 50%;
   }
 
+  /* One deliberate, contained exception to the frozen-shimmer rule above:
+     a genuinely animated light-blue -> white sweep for a single hero word
+     on the homepage. Same reasoning as .card-sheen (also still animated,
+     also never flagged as a cost) — one continuously-animating element is
+     a real, bounded expense, not the same problem as animating dozens of
+     .shimmer-text-soft instances per page. */
+  .shine-text {
+    background: linear-gradient(
+      100deg,
+      #64cefb 0%,
+      #64cefb 40%,
+      #ffffff 50%,
+      #64cefb 60%,
+      #64cefb 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine-sweep 3s linear infinite;
+  }
+
+  @keyframes shine-sweep {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
   /* Rotating conic-gradient rim — a "future style" glowing edge for a small
      set of hero-weight elements. Applied to an element with position:relative;
      the glow lives in ::before, clipped to a ring by mask, so it never bleeds
@@ -619,6 +650,10 @@ body {
   .shimmer-text-vivid {
     animation: none;
     background-position: 0% 50%;
+  }
+  .shine-text {
+    animation: none;
+    background-position: 0% 0;
   }
   .glow-ring::before {
     animation: none;

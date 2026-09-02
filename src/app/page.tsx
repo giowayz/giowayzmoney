@@ -64,7 +64,7 @@ export default function Home() {
         <h1 className="font-display glow-text text-4xl sm:text-6xl lg:text-7xl tracking-tight text-[#f4f0ff] leading-[1.05]">
           Офферы, которым
           <br />
-          можно <span className="shimmer-text">доверять</span>.
+          можно <span className="shine-text">доверять</span>.
         </h1>
 
         <p className="max-w-2xl shimmer-text-vivid text-base sm:text-lg leading-relaxed">
