@@ -48,18 +48,23 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture, shown at its real 1536×1024 resolution —
-          `cover` scales/stretches it to fill the page, distorting it away
-          from how it actually looks in the source file. Tiling at native
-          size instead keeps every repeat undistorted, and because each tile
-          is much bigger than a typical viewport, the repeat seam only shows
-          up after scrolling well past one screen, not immediately. */}
+      {/* Graffiti-wall texture. This backdrop spans the full scrollable
+          page height (not one viewport), so a plain `cover` would try to
+          fill that whole tall box with a 1536×1024 image and blow it up
+          far past readable size. Sizing width to the viewport instead
+          ("100vw auto", aspect ratio preserved — never stretched) means a
+          390px phone and a 1440px desktop both see the exact same
+          composition, just scaled to their own screen width, and
+          `repeat-y` tiles that consistent framing down the rest of the
+          page. Before this, the texture was pinned to a literal 1536px
+          tile — correct on a desktop viewport that width, but showing only
+          a tiny, arbitrarily-cropped corner of it on a narrow phone. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "1536px 1024px",
+          backgroundRepeat: "repeat-y",
+          backgroundSize: "100vw auto",
           backgroundPosition: "center top",
           opacity: 1,
         }}
