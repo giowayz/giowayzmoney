@@ -48,15 +48,17 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture. The source image is a single composed
-          scene (wall up top, a reflective floor with fading smoke at the
-          very bottom) — repeating it down the page stacked a second "floor"
-          under the first "wall", a hard, visible seam at every repeat.
-          Shown once instead, sized to the viewport width ("100vw auto",
-          aspect ratio preserved — never stretched), and masked to fade out
-          over its own bottom half. Past that fade the div is simply empty,
-          so the page's flat `bg-[#030014]` base shows through — one
-          continuous backdrop with no seam anywhere.
+      {/* Graffiti-wall texture, covering the whole page — not just the top.
+          Tiling a non-seamless "wall+floor" image with a plain repeat stacks
+          a hard cut at every boundary (floor meeting wall). Instead each
+          tile fades in from transparent at its own top edge and fades back
+          out before its bottom edge, using a `repeating-linear-gradient`
+          mask whose period matches the tile's own rendered height — so
+          where one tile's fade-out and the next tile's fade-in overlap,
+          both are already near-invisible and blend into the shared flat
+          `bg-[#030014]` base instead of clashing. That base color is what
+          actually shows at every seam; no edge of the image ever meets
+          another edge of the image directly.
 
           Two separate assets, swapped by breakpoint rather than one image
           reused at both sizes: the desktop art is landscape (1536×1024) and
@@ -66,28 +68,30 @@ export default function StarField() {
           for below `md` that shows the same motifs (corner tags, the wheel
           mark, the smoke) at a scale that actually fills a phone screen. */}
       <div
-        className="absolute inset-x-0 top-0 hidden md:block"
+        className="absolute inset-0 hidden md:block"
         style={{
-          height: "66.7vw",
           backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "no-repeat",
+          backgroundRepeat: "repeat-y",
           backgroundSize: "100vw auto",
           backgroundPosition: "center top",
-          maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+          maskImage:
+            "repeating-linear-gradient(to bottom, transparent 0vw, black 8vw, black 58.7vw, transparent 66.7vw)",
+          WebkitMaskImage:
+            "repeating-linear-gradient(to bottom, transparent 0vw, black 8vw, black 58.7vw, transparent 66.7vw)",
           opacity: 1,
         }}
       />
       <div
-        className="absolute inset-x-0 top-0 block md:hidden"
+        className="absolute inset-0 block md:hidden"
         style={{
-          height: "228.4vw",
           backgroundImage: "url(/brand/bg-texture-mobile.png)",
-          backgroundRepeat: "no-repeat",
+          backgroundRepeat: "repeat-y",
           backgroundSize: "100vw auto",
           backgroundPosition: "center top",
-          maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+          maskImage:
+            "repeating-linear-gradient(to bottom, transparent 0vw, black 18vw, black 210.4vw, transparent 228.4vw)",
+          WebkitMaskImage:
+            "repeating-linear-gradient(to bottom, transparent 0vw, black 18vw, black 210.4vw, transparent 228.4vw)",
           opacity: 1,
         }}
       />
