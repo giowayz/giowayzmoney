@@ -1,10 +1,19 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
+import { Landmark, FileText, CreditCard, Wallet, Layers, Clock } from "lucide-react";
 import CardCarousel from "@/components/CardCarousel";
 import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import ServicesSection from "@/components/ServicesSection";
-import { OFFERS, CATEGORY_LABELS } from "@/data/offers";
+import FeaturedOfferSection from "@/components/FeaturedOfferSection";
+import { OFFERS, CATEGORY_LABELS, type OfferCategory } from "@/data/offers";
+
+const CATEGORY_ICONS: Record<OfferCategory, typeof Landmark> = {
+  rko: Landmark,
+  business_registration: FileText,
+  credit_cards: CreditCard,
+  debit_cards: Wallet,
+};
 
 const BANK_COUNT = new Set(OFFERS.map((o) => o.bankKey)).size;
 const AVG_HOLD_DAYS = Math.round(
@@ -86,24 +95,37 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
-          {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-            <span
-              key={key}
-              className="badge-glow rounded-[32px] px-3.5 py-1.5 text-xs shimmer-text-vivid"
-            >
-              {label}
-            </span>
-          ))}
+        <div className="mt-2 grid w-full max-w-3xl grid-cols-2 sm:grid-cols-4 liquid-glass rounded-2xl overflow-hidden">
+          {Object.entries(CATEGORY_LABELS).map(([key, label], i) => {
+            const Icon = CATEGORY_ICONS[key as OfferCategory];
+            return (
+              <Link
+                key={key}
+                href={`/offers#${key}`}
+                className={`group flex flex-col items-center gap-2 px-3 py-4 text-center transition hover:bg-white/5 ${
+                  i === 0 ? "bg-white/5" : ""
+                }`}
+              >
+                <Icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.75} />
+                <span className="text-xs shimmer-text-vivid">{label}</span>
+                <span
+                  className={`mt-0.5 h-0.5 w-8 rounded-full bg-[#8c7aff] transition-opacity ${
+                    i === 0 ? "opacity-100" : "opacity-0 group-hover:opacity-40"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </div>
 
         <div id="stats" className="mt-6 grid grid-cols-3 gap-6 sm:gap-12 text-center scroll-mt-28">
-          <Stat value={OFFERS.length} label="активных офферов" />
-          <Stat value={BANK_COUNT} label="банков-партнёров" />
-          <Stat value={`${AVG_HOLD_DAYS} дн.`} label="средний холд" />
+          <Stat icon={Layers} value={OFFERS.length} label="активных офферов" />
+          <Stat icon={Landmark} value={BANK_COUNT} label="банков-партнёров" />
+          <Stat icon={Clock} value={`${AVG_HOLD_DAYS} дн.`} label="средний холд" />
         </div>
       </section>
 
+      <FeaturedOfferSection />
       <ServicesSection />
       <AboutSection />
       <HowItWorksSection />
@@ -111,10 +133,21 @@ export default function Home() {
   );
 }
 
-function Stat({ value, label }: { value: string | number; label: string }) {
+function Stat({
+  icon: Icon,
+  value,
+  label,
+}: {
+  icon: typeof Layers;
+  value: string | number;
+  label: string;
+}) {
   return (
     <div>
-      <div className="font-display text-2xl sm:text-3xl text-[#f4f0ff] tabular-nums">{value}</div>
+      <div className="flex items-center justify-center gap-2">
+        <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-[#8c7aff]" strokeWidth={1.75} />
+        <div className="font-display text-2xl sm:text-3xl text-[#f4f0ff] tabular-nums">{value}</div>
+      </div>
       <div className="mt-1 text-xs shimmer-text-vivid">{label}</div>
     </div>
   );
