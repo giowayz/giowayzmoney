@@ -48,24 +48,26 @@ export default function StarField() {
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#030014] contain-paint"
       aria-hidden="true"
     >
-      {/* Graffiti-wall texture. This backdrop spans the full scrollable
-          page height (not one viewport), so a plain `cover` would try to
-          fill that whole tall box with a 1536×1024 image and blow it up
-          far past readable size. Sizing width to the viewport instead
-          ("100vw auto", aspect ratio preserved — never stretched) means a
-          390px phone and a 1440px desktop both see the exact same
-          composition, just scaled to their own screen width, and
-          `repeat-y` tiles that consistent framing down the rest of the
-          page. Before this, the texture was pinned to a literal 1536px
-          tile — correct on a desktop viewport that width, but showing only
-          a tiny, arbitrarily-cropped corner of it on a narrow phone. */}
+      {/* Graffiti-wall texture. The source image is a single composed
+          scene (wall up top, a reflective floor with fading smoke at the
+          very bottom) — repeating it down the page stacked a second "floor"
+          under the first "wall", a hard, visible seam at every repeat.
+          Shown once instead, sized to the viewport width ("100vw auto",
+          aspect ratio preserved — never stretched, so phone and desktop see
+          the same composition just at their own scale), and masked to fade
+          out over its own bottom third. Past that fade the div is simply
+          empty, so the page's flat `bg-[#030014]` base shows through —
+          one continuous backdrop with no seam anywhere. */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-x-0 top-0"
         style={{
+          height: "66.7vw",
           backgroundImage: "url(/brand/bg-texture.png)",
-          backgroundRepeat: "repeat-y",
+          backgroundRepeat: "no-repeat",
           backgroundSize: "100vw auto",
           backgroundPosition: "center top",
+          maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
           opacity: 1,
         }}
       />
