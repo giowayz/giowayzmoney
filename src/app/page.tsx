@@ -1,19 +1,12 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Landmark, FileText, CreditCard, Wallet, Layers, Clock, ShieldCheck, Lock, Zap } from "lucide-react";
+import { Landmark, Layers, Clock, ShieldCheck, Lock, Zap } from "lucide-react";
 import CardCarousel from "@/components/CardCarousel";
 import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import ServicesSection from "@/components/ServicesSection";
 import FeaturedOfferSection from "@/components/FeaturedOfferSection";
-import { OFFERS, CATEGORY_LABELS, type OfferCategory } from "@/data/offers";
-
-const CATEGORY_ICONS: Record<OfferCategory, typeof Landmark> = {
-  rko: Landmark,
-  business_registration: FileText,
-  credit_cards: CreditCard,
-  debit_cards: Wallet,
-};
+import { OFFERS } from "@/data/offers";
 
 const BANK_COUNT = new Set(OFFERS.map((o) => o.bankKey)).size;
 const AVG_HOLD_DAYS = Math.round(
@@ -101,29 +94,6 @@ export default function Home() {
             <div className="card-sheen" style={{ "--sheen-delay": "0.8s" } as CSSProperties} />
             Личный кабинет
           </Link>
-        </div>
-
-        <div className="mt-2 grid w-full max-w-3xl grid-cols-2 sm:grid-cols-4 liquid-glass rounded-2xl overflow-hidden">
-          {Object.entries(CATEGORY_LABELS).map(([key, label], i) => {
-            const Icon = CATEGORY_ICONS[key as OfferCategory];
-            return (
-              <Link
-                key={key}
-                href={`/offers#${key}`}
-                className={`group flex flex-col items-center gap-2 px-3 py-4 text-center transition hover:bg-white/5 ${
-                  i === 0 ? "bg-white/5" : ""
-                }`}
-              >
-                <Icon className="h-5 w-5 text-[#8c7aff]" strokeWidth={1.75} />
-                <span className="text-xs shimmer-text-vivid">{label}</span>
-                <span
-                  className={`mt-0.5 h-0.5 w-8 rounded-full bg-[#8c7aff] transition-opacity ${
-                    i === 0 ? "opacity-100" : "opacity-0 group-hover:opacity-40"
-                  }`}
-                />
-              </Link>
-            );
-          })}
         </div>
 
         <div id="stats" className="mt-6 grid grid-cols-3 gap-6 sm:gap-12 text-center scroll-mt-28">
