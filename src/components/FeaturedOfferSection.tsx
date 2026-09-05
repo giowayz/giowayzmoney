@@ -9,6 +9,11 @@ import { getBankLogo } from "@/data/bankLogos";
 
 const featured = OFFERS.find((o) => o.slug === "ozon-business-registration-rko")!;
 
+// Three more real RKO offers, shown as compact cards under the featured one —
+// same "several offers below the hero card" shape as the reference mockup.
+const MORE_SLUGS = ["alfa-bank-rko", "tochka-bank-rko", "vtb-rko"];
+const moreOffers = MORE_SLUGS.map((slug) => OFFERS.find((o) => o.slug === slug)!);
+
 export default function FeaturedOfferSection() {
   const logo = getBankLogo(featured.bankKey);
 
@@ -87,7 +92,67 @@ export default function FeaturedOfferSection() {
           </div>
         </Link>
       </motion.div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {moreOffers.map((offer, i) => (
+          <CompactOfferCard key={offer.slug} offer={offer} delay={0.15 + i * 0.08} />
+        ))}
+      </div>
     </section>
+  );
+}
+
+function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; delay: number }) {
+  const logo = getBankLogo(offer.bankKey);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, delay }}
+    >
+      <Link
+        href={`/offers/${offer.slug}`}
+        className="glow-ring liquid-glass card-hover-glow group relative block overflow-hidden rounded-2xl p-4"
+      >
+        <div className="card-sheen" style={{ "--sheen-delay": `${1.2 + delay}s` } as CSSProperties} />
+
+        <div className="relative flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <span className="glow-ring relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1.5">
+              {logo ? (
+                <img src={logo} alt="" className="h-full w-full object-contain" draggable={false} />
+              ) : (
+                <span className="text-xs font-bold text-black">{offer.bank.slice(0, 1)}</span>
+              )}
+            </span>
+            <h4 className="font-display truncate text-sm text-[#f4f0ff] group-hover:text-[#9382ff] transition-colors">
+              {offer.bank}
+            </h4>
+          </div>
+          <span className="badge-glow shrink-0 rounded-[32px] px-2 py-1 text-[10px] font-medium text-[#c9b7ff]">
+            {CATEGORY_LABELS[offer.category]}
+          </span>
+        </div>
+
+        <div className="relative mt-3 flex items-center justify-between">
+          <span className="font-display glow-text text-xl text-[#f4f0ff] tabular-nums">
+            {offer.price.toLocaleString("ru-RU")} ₽
+          </span>
+          <span className="btn-glow-primary shrink-0 px-4 py-2 text-xs">Оформить</span>
+        </div>
+        <div className="relative mt-1 text-[10px] shimmer-text-soft">холд {offer.defaultHoldDays} дн.</div>
+
+        <span className="aurora-divider relative mt-3 block" />
+
+        <div className="relative mt-3 grid grid-cols-3 gap-1 text-center">
+          <FooterStat icon={Banknote} label="Выплата" value={`${offer.price.toLocaleString("ru-RU")} ₽`} compact />
+          <FooterStat icon={CalendarClock} label="Холд" value={`${offer.defaultHoldDays} дн.`} compact />
+          <FooterStat icon={ShieldCheck} label="Скрин" value="✓" compact />
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
@@ -95,16 +160,20 @@ function FooterStat({
   icon: Icon,
   label,
   value,
+  compact = false,
 }: {
   icon: typeof Banknote;
   label: string;
   value: string;
+  compact?: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1.5">
-      <Icon className="h-4 w-4 text-[#8c7aff]" strokeWidth={1.75} />
-      <div className="text-[10px] uppercase tracking-wide text-white/40">{label}</div>
-      <div className="text-sm text-[#f4f0ff]">{value}</div>
+    <div className="flex flex-col items-center gap-1">
+      <Icon className={compact ? "h-3 w-3 text-[#8c7aff]" : "h-4 w-4 text-[#8c7aff]"} strokeWidth={1.75} />
+      <div className={compact ? "text-[8px] uppercase tracking-wide text-white/40" : "text-[10px] uppercase tracking-wide text-white/40"}>
+        {label}
+      </div>
+      <div className={compact ? "text-xs text-[#f4f0ff]" : "text-sm text-[#f4f0ff]"}>{value}</div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Landmark, FileText, CreditCard, Wallet, Layers, Clock } from "lucide-react";
+import { Landmark, FileText, CreditCard, Wallet, Layers, Clock, ShieldCheck, Lock, Zap } from "lucide-react";
 import CardCarousel from "@/components/CardCarousel";
 import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -36,6 +36,12 @@ const FEATURED_OFFERS = FEATURED_SLUGS.map((slug) => OFFERS.find((o) => o.slug =
 export default function Home() {
   return (
     <div className="flex flex-col">
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 pt-6 sm:pt-8 text-xs sm:text-sm">
+        <TrustBadge icon={ShieldCheck} label="Проверенные банки" />
+        <TrustBadge icon={Lock} label="Надёжные условия" />
+        <TrustBadge icon={Zap} label="Быстрые выплаты" />
+      </div>
+
       <section className="relative flex flex-col items-center gap-4 text-center px-4 pt-8 sm:pt-10 pb-2 sm:pb-4">
         <div className="flex items-center gap-3 sm:gap-5 w-full max-w-2xl">
           <span className="aurora-divider" />
@@ -129,6 +135,17 @@ export default function Home() {
       <ServicesSection />
       <AboutSection />
       <HowItWorksSection />
+    </div>
+  );
+}
+
+function TrustBadge({ icon: Icon, label }: { icon: typeof ShieldCheck; label: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="icon-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]">
+        <Icon className="h-4 w-4 text-[#8c7aff]" strokeWidth={1.75} />
+      </span>
+      <span className="shimmer-text-vivid text-left leading-tight">{label}</span>
     </div>
   );
 }
