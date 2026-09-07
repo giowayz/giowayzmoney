@@ -481,55 +481,6 @@ body {
 }
 
 @layer components {
-  /* Slow organic drift for the nebula blobs in the fixed cosmic backdrop —
-     translate + gentle scale pulse along an irregular loop so the background
-     reads as alive without ever drawing the eye like foreground motion does. */
-  @keyframes nebula-drift {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    25% {
-      transform: translate(4%, -6%) scale(1.08);
-    }
-    50% {
-      transform: translate(-3%, 4%) scale(0.96);
-    }
-    75% {
-      transform: translate(-6%, -3%) scale(1.05);
-    }
-    100% {
-      transform: translate(0, 0) scale(1);
-    }
-  }
-
-  .nebula-blob {
-    animation-name: nebula-drift;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    will-change: transform;
-  }
-
-  /* A sparse subset of stars breathes between its base opacity and a
-     brighter peak — opacity-only, so it composites for free. Each star
-     carries its own --twinkle-base custom property (its original random
-     opacity) so the animation returns to exactly where it started rather
-     than snapping to a shared value. */
-  @keyframes star-twinkle {
-    0%,
-    100% {
-      opacity: var(--twinkle-base, 0.4);
-    }
-    50% {
-      opacity: 1;
-    }
-  }
-
-  .star-twinkle {
-    animation-name: star-twinkle;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-  }
-
   /* Gentle constant bob for offer cards — small enough to read as "alive",
      never enough to make text hard to track while reading. Give each card a
      different animation-delay (inline style) so a whole grid doesn't bob in
@@ -656,12 +607,6 @@ body {
     background-position: 0% 0;
   }
   .glow-ring::before {
-    animation: none;
-  }
-  .nebula-blob {
-    animation: none;
-  }
-  .star-twinkle {
     animation: none;
   }
   .card-float {
