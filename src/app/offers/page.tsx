@@ -27,17 +27,15 @@ export default function OffersPage() {
         категориям, чтобы можно было сравнить условия за один взгляд.
       </p>
 
-      {/* Same chrome-rim language as the nav bar: the bar itself is framed,
-          and each category is one of its pills. */}
-      <nav className="chrome-frame liquid-glass mb-12 flex flex-wrap gap-2 rounded-full p-2">
+      <nav className="liquid-glass mb-12 flex flex-wrap gap-2 rounded-2xl p-3">
         {categories.map(({ category, offers }) => (
           <a
             key={category}
             href={`#${category}`}
-            className="chrome-frame flex h-9 items-center gap-1.5 rounded-[32px] bg-[#0b1a4a] px-3.5 transition hover:brightness-125"
+            className="rounded-[5px] px-3 py-1.5 text-xs text-[#c9b7ff] hover:bg-[#5046e4]/20 hover:text-[#f4f0ff] transition"
           >
-            <span className="chrome-badge-text text-xs">{CATEGORY_LABELS[category]}</span>
-            <span className="chrome-badge-text text-xs opacity-70">{offers.length}</span>
+            {CATEGORY_LABELS[category]}
+            <span className="ml-1.5 shimmer-text-soft">{offers.length}</span>
           </a>
         ))}
       </nav>

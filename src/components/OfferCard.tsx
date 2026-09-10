@@ -9,7 +9,7 @@ export default function OfferCard({ offer, index = 0 }: { offer: OfferSeed; inde
   return (
     <Link
       href={`/offers/${offer.slug}`}
-      className="chrome-frame liquid-glass card-float card-hover-glow group relative flex flex-col justify-between overflow-hidden rounded-2xl p-5 contain-content"
+      className="glow-ring liquid-glass card-float card-hover-glow group relative flex flex-col justify-between overflow-hidden rounded-2xl p-5 contain-content"
       style={{ animationDelay: `${(index % 5) * 0.4}s` }}
     >
       <div
@@ -36,10 +36,8 @@ export default function OfferCard({ offer, index = 0 }: { offer: OfferSeed; inde
             </span>
             <div className="text-xs uppercase tracking-wider shimmer-text-soft">{offer.bank}</div>
           </div>
-          <span className="chrome-frame shrink-0 rounded-[32px] bg-[#0b1a4a] px-2.5 py-1">
-            <span className="chrome-badge-text text-[10px]">
-              {offer.defaultHoldDays} дн. холд
-            </span>
+          <span className="badge-glow shrink-0 rounded-[32px] px-2.5 py-1 text-[10px] font-medium text-[#c9b7ff]">
+            {offer.defaultHoldDays} дн. холд
           </span>
         </div>
         <h3 className="font-display leading-snug mb-2 text-[#f4f0ff] group-hover:text-[#9382ff] transition-colors">
