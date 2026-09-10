@@ -45,7 +45,7 @@ export default async function Nav() {
         <div className="hidden md:flex items-center gap-2 ml-3 min-w-0 overflow-hidden">
           <Link
             href="/offers"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] bg-black pl-1.5 pr-3.5 transition hover:brightness-125"
           >
             <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
               <LayoutGrid className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
@@ -54,7 +54,7 @@ export default async function Nav() {
           </Link>
           <Link
             href="/cabinet"
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] bg-black pl-1.5 pr-3.5 transition hover:brightness-125"
           >
             <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
               <UserRound className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
@@ -63,7 +63,7 @@ export default async function Nav() {
           </Link>
           <Link
             href={user ? "/statistics" : "/#stats"}
-            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] pl-1.5 pr-3.5 transition hover:brightness-125"
+            className="chrome-frame flex h-9 shrink-0 items-center gap-2 rounded-[32px] bg-black pl-1.5 pr-3.5 transition hover:brightness-125"
           >
             <span className="icon-badge h-6 w-6 shrink-0 rounded-[8px]">
               <BarChart3 className="h-3.5 w-3.5 text-[#8c7aff]" strokeWidth={1.75} />
@@ -73,7 +73,7 @@ export default async function Nav() {
           {isAdmin && (
             <Link
               href="/admin"
-              className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] px-3.5 transition hover:brightness-125"
+              className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] bg-black px-3.5 transition hover:brightness-125"
             >
               <span className="chrome-badge-text text-xs">Админ</span>
             </Link>
@@ -89,7 +89,7 @@ export default async function Nav() {
               <form action={signOut}>
                 <button
                   type="submit"
-                  className="chrome-frame flex h-9 items-center rounded-[32px] px-4 hover:brightness-125 transition"
+                  className="chrome-frame flex h-9 items-center rounded-[32px] bg-black px-4 hover:brightness-125 transition"
                 >
                   <span className="chrome-badge-text text-xs">Выйти</span>
                 </button>
@@ -102,7 +102,7 @@ export default async function Nav() {
               </Link>
               <Link
                 href="/auth/register"
-                className="chrome-frame flex h-9 items-center rounded-[32px] bg-[#0b1a4a] px-4 hover:brightness-125 transition"
+                className="chrome-frame flex h-9 items-center rounded-[32px] bg-black px-4 hover:brightness-125 transition"
               >
                 <span className="chrome-badge-text text-xs">Регистрация</span>
               </Link>
