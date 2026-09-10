@@ -32,12 +32,13 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed shimmer-text-vivid sm:text-lg"
+          className="lead-text mx-auto mt-6 max-w-2xl text-base sm:text-lg"
         >
-          Мы каждый день проверяем условия у банков-партнёров, чтобы цена и срок холда в
-          карточке оффера совпадали с тем, что вы получите на самом деле. Никакой воды —
-          только точные цифры, реальные ссылки и статус вашей заявки в одном личном
-          кабинете.
+          Мы каждый день проверяем условия у банков-партнёров, чтобы{" "}
+          <span className="shine-text">цена и срок холда</span> в карточке оффера совпадали
+          с тем, что вы получите на самом деле. Никакой воды — только{" "}
+          <span className="shine-text">точные цифры</span>, реальные ссылки и статус вашей
+          заявки в одном личном кабинете.
         </motion.p>
       </div>
     </section>

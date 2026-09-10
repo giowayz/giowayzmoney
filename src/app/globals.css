@@ -349,6 +349,47 @@ body {
       0 0 14px rgba(80, 70, 228, 0.08);
   }
 
+  /* Lead body copy — the hero subtitle and the About paragraph. Plain white
+     instead of the violet gradient (.shimmer-text-vivid), so the accent
+     words marked up with .shine-text are the only colored thing in the
+     paragraph and actually read as accents. Heavier weight plus a soft dark
+     halo keeps it crisp over the busy graffiti backdrop, and the wider
+     leading gives it the airy, deliberate feel of editorial body type
+     rather than a wall of text. */
+  .lead-text {
+    color: #ffffff;
+    font-weight: 600;
+    line-height: 1.75;
+    letter-spacing: 0.005em;
+    text-shadow:
+      0 1px 2px rgba(3, 0, 20, 0.7),
+      0 0 20px rgba(3, 0, 20, 0.55);
+  }
+
+  /* Accent words inside .lead-text. The shared .shine-text sweep peaks at
+     pure white, which works on the huge H1 but at body-copy size made the
+     accent wash out into the surrounding white text instead of reading as
+     a different color. Same sweep, but it peaks at pale cyan over a
+     saturated sky-blue base, so the word stays visibly blue at every point
+     in the animation. */
+  .lead-text .shine-text {
+    background: linear-gradient(
+      100deg,
+      #2aa8ee 0%,
+      #38bdf8 40%,
+      #b3f0ff 50%,
+      #38bdf8 60%,
+      #2aa8ee 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-weight: 800;
+    text-shadow:
+      0 1px 2px rgba(3, 0, 20, 0.75),
+      0 0 16px rgba(56, 189, 248, 0.35);
+  }
+
   /* The site masthead wrapper — both lines ("GIØWAYZ" and "ZØNE") are now
      pre-rendered chrome PNGs, so this just frames them with a drop shadow
      and stacks them tightly. */

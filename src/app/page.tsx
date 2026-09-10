@@ -75,7 +75,7 @@ export default function Home() {
           можно <span className="shine-text">доверять</span>.
         </h1>
 
-        <p className="max-w-2xl shimmer-text-vivid text-base sm:text-lg leading-relaxed">
+        <p className="max-w-2xl lead-text text-base sm:text-lg">
           Только актуальные банковские офферы с понятными условиями,{" "}
           <span className="shine-text">фиксированной выплатой</span> и{" "}
           <span className="shine-text">прозрачным холдом</span>.
@@ -85,14 +85,23 @@ export default function Home() {
           <span className="shine-text">точные выплаты</span>.
         </p>
 
+        {/* Same chrome-rim pill language as the nav bar: .chrome-frame rim +
+            .chrome-badge-text label, one outlined and one filled exactly as
+            the nav's pills and its "Регистрация" button are. */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Link href="/offers" className="btn-glow-primary text-sm">
+          <Link
+            href="/offers"
+            className="chrome-frame relative flex h-11 items-center overflow-hidden rounded-[32px] px-6 transition hover:brightness-125"
+          >
             <div className="card-sheen" style={{ "--sheen-delay": "0s" } as CSSProperties} />
-            Смотреть все офферы
+            <span className="chrome-badge-text relative text-sm">Смотреть все офферы</span>
           </Link>
-          <Link href="/cabinet" className="btn-glow-secondary text-sm">
+          <Link
+            href="/cabinet"
+            className="chrome-frame relative flex h-11 items-center overflow-hidden rounded-[32px] bg-[#0b1a4a] px-6 transition hover:brightness-125"
+          >
             <div className="card-sheen" style={{ "--sheen-delay": "0.8s" } as CSSProperties} />
-            Личный кабинет
+            <span className="chrome-badge-text relative text-sm">Личный кабинет</span>
           </Link>
         </div>
 
