@@ -79,7 +79,10 @@ export default function FeaturedOfferSection() {
                 </span>
                 <div className="mt-1 text-xs shimmer-text-soft">холд {featured.defaultHoldDays} дн.</div>
               </div>
-              <span className="btn-glow-primary shrink-0 text-sm">Оформить</span>
+              {/* Same chrome-rim pill as the nav bar and the hero CTAs. */}
+              <span className="chrome-frame flex h-11 shrink-0 items-center rounded-[32px] bg-[#0b1a4a] px-6">
+                <span className="chrome-badge-text text-sm">Оформить</span>
+              </span>
             </div>
           </div>
 
@@ -136,11 +139,13 @@ function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; de
           </span>
         </div>
 
-        <div className="relative mt-3 flex items-center justify-between">
+        <div className="relative mt-3 flex items-center justify-between gap-2">
           <span className="font-display glow-text text-xl text-[#f4f0ff] tabular-nums">
             {offer.price.toLocaleString("ru-RU")} ₽
           </span>
-          <span className="btn-glow-primary shrink-0 px-4 py-2 text-xs">Оформить</span>
+          <span className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] bg-[#0b1a4a] px-4">
+            <span className="chrome-badge-text text-xs">Оформить</span>
+          </span>
         </div>
         <div className="relative mt-1 text-[10px] shimmer-text-soft">холд {offer.defaultHoldDays} дн.</div>
 
