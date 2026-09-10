@@ -44,7 +44,7 @@ export default function FeaturedOfferSection() {
       >
         <Link
           href={`/offers/${featured.slug}`}
-          className="glow-ring liquid-glass card-hover-glow group relative block overflow-hidden rounded-2xl p-6 md:p-7"
+          className="chrome-frame liquid-glass card-hover-glow group relative block overflow-hidden rounded-2xl p-6 md:p-7"
         >
           <div className="card-sheen" style={{ "--sheen-delay": "0s" } as CSSProperties} />
 
@@ -62,8 +62,10 @@ export default function FeaturedOfferSection() {
                   <h3 className="font-display text-xl md:text-2xl text-[#f4f0ff] group-hover:text-[#9382ff] transition-colors">
                     {featured.bank}
                   </h3>
-                  <span className="badge-glow rounded-[32px] px-2.5 py-1 text-[10px] font-medium text-[#c9b7ff]">
-                    {CATEGORY_LABELS[featured.category]}
+                  <span className="chrome-frame rounded-[32px] bg-[#0b1a4a] px-2.5 py-1">
+                    <span className="chrome-badge-text text-[10px]">
+                      {CATEGORY_LABELS[featured.category]}
+                    </span>
                   </span>
                 </div>
                 <p className="mt-1 text-sm shimmer-text-soft">
@@ -117,7 +119,7 @@ function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; de
     >
       <Link
         href={`/offers/${offer.slug}`}
-        className="glow-ring liquid-glass card-hover-glow group relative block overflow-hidden rounded-2xl p-4"
+        className="chrome-frame liquid-glass card-hover-glow group relative block overflow-hidden rounded-2xl p-4"
       >
         <div className="card-sheen" style={{ "--sheen-delay": `${1.2 + delay}s` } as CSSProperties} />
 
@@ -134,8 +136,8 @@ function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; de
               {offer.bank}
             </h4>
           </div>
-          <span className="badge-glow shrink-0 rounded-[32px] px-2 py-1 text-[10px] font-medium text-[#c9b7ff]">
-            {CATEGORY_LABELS[offer.category]}
+          <span className="chrome-frame shrink-0 rounded-[32px] bg-[#0b1a4a] px-2 py-1">
+            <span className="chrome-badge-text text-[10px]">{CATEGORY_LABELS[offer.category]}</span>
           </span>
         </div>
 
