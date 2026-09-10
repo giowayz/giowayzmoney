@@ -55,7 +55,7 @@ export default async function OfferDetailPage(props: PageProps<"/offers/[slug]">
       </FadeIn>
 
       <FadeIn delay={0.16}>
-        <div className="glow-ring liquid-glass mt-6 rounded-2xl p-6 space-y-4">
+        <div className="chrome-frame liquid-glass mt-6 rounded-2xl p-6 space-y-4">
           <Row label="Цена">
             <span
               className="text-2xl font-display tabular-nums text-white"
@@ -75,19 +75,20 @@ export default async function OfferDetailPage(props: PageProps<"/offers/[slug]">
 
       <FadeIn delay={0.24}>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          {/* Same chrome-rim pill language as the nav bar and the homepage. */}
           <a
             href={`/go/${offer.slug}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-[5px] bg-[#5046e4] px-6 py-3 text-center font-medium text-white hover:bg-[#10093a] transition"
+            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-[#0b1a4a] px-6 py-2.5 text-center transition hover:brightness-125"
           >
-            Перейти к оформлению →
+            <span className="chrome-badge-text text-sm">Перейти к оформлению →</span>
           </a>
           <Link
             href={`/cabinet/submit?offer=${offer.slug}`}
-            className="liquid-glass rounded-[5px] px-6 py-3 text-center font-medium text-[#f4f0ff] hover:brightness-125 transition"
+            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-[#0b1a4a] px-6 py-2.5 text-center transition hover:brightness-125"
           >
-            Я оформил — прикрепить скрин
+            <span className="chrome-badge-text text-sm">Я оформил — прикрепить скрин</span>
           </Link>
         </div>
       </FadeIn>
