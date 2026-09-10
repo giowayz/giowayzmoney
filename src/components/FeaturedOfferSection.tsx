@@ -62,7 +62,7 @@ export default function FeaturedOfferSection() {
                   <h3 className="font-display text-xl md:text-2xl text-[#f4f0ff] group-hover:text-[#9382ff] transition-colors">
                     {featured.bank}
                   </h3>
-                  <span className="chrome-frame rounded-[32px] bg-[#0b1a4a] px-2.5 py-1">
+                  <span className="chrome-frame rounded-[32px] bg-black px-2.5 py-1">
                     <span className="chrome-badge-text text-[10px]">
                       {CATEGORY_LABELS[featured.category]}
                     </span>
@@ -82,7 +82,7 @@ export default function FeaturedOfferSection() {
                 <div className="mt-1 text-xs shimmer-text-soft">холд {featured.defaultHoldDays} дн.</div>
               </div>
               {/* Same chrome-rim pill as the nav bar and the hero CTAs. */}
-              <span className="chrome-frame flex h-11 shrink-0 items-center rounded-[32px] bg-[#0b1a4a] px-6">
+              <span className="chrome-frame flex h-11 shrink-0 items-center rounded-[32px] bg-black px-6">
                 <span className="chrome-badge-text text-sm">Оформить</span>
               </span>
             </div>
@@ -136,7 +136,7 @@ function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; de
               {offer.bank}
             </h4>
           </div>
-          <span className="chrome-frame shrink-0 rounded-[32px] bg-[#0b1a4a] px-2 py-1">
+          <span className="chrome-frame shrink-0 rounded-[32px] bg-black px-2 py-1">
             <span className="chrome-badge-text text-[10px]">{CATEGORY_LABELS[offer.category]}</span>
           </span>
         </div>
@@ -145,7 +145,7 @@ function CompactOfferCard({ offer, delay }: { offer: (typeof OFFERS)[number]; de
           <span className="font-display glow-text text-xl text-[#f4f0ff] tabular-nums">
             {offer.price.toLocaleString("ru-RU")} ₽
           </span>
-          <span className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] bg-[#0b1a4a] px-4">
+          <span className="chrome-frame flex h-9 shrink-0 items-center rounded-[32px] bg-black px-4">
             <span className="chrome-badge-text text-xs">Оформить</span>
           </span>
         </div>

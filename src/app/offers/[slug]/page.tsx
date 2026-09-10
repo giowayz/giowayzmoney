@@ -80,13 +80,13 @@ export default async function OfferDetailPage(props: PageProps<"/offers/[slug]">
             href={`/go/${offer.slug}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-[#0b1a4a] px-6 py-2.5 text-center transition hover:brightness-125"
+            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-black px-6 py-2.5 text-center transition hover:brightness-125"
           >
             <span className="chrome-badge-text text-sm">Перейти к оформлению →</span>
           </a>
           <Link
             href={`/cabinet/submit?offer=${offer.slug}`}
-            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-[#0b1a4a] px-6 py-2.5 text-center transition hover:brightness-125"
+            className="chrome-frame flex min-h-11 items-center justify-center rounded-[32px] bg-black px-6 py-2.5 text-center transition hover:brightness-125"
           >
             <span className="chrome-badge-text text-sm">Я оформил — прикрепить скрин</span>
           </Link>
