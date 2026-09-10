@@ -86,12 +86,12 @@ export default function Home() {
         </p>
 
         {/* Same chrome-rim pill language as the nav bar: .chrome-frame rim +
-            .chrome-badge-text label, one outlined and one filled exactly as
-            the nav's pills and its "Регистрация" button are. */}
+            .chrome-badge-text label, both filled with the same #0b1a4a as
+            the nav's "Регистрация" button. */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             href="/offers"
-            className="chrome-frame relative flex h-11 items-center overflow-hidden rounded-[32px] px-6 transition hover:brightness-125"
+            className="chrome-frame relative flex h-11 items-center overflow-hidden rounded-[32px] bg-[#0b1a4a] px-6 transition hover:brightness-125"
           >
             <div className="card-sheen" style={{ "--sheen-delay": "0s" } as CSSProperties} />
             <span className="chrome-badge-text relative text-sm">Смотреть все офферы</span>
