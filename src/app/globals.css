@@ -349,21 +349,59 @@ body {
       0 0 14px rgba(80, 70, 228, 0.08);
   }
 
-  /* Lead body copy — the hero subtitle and the About paragraph. Plain white
-     instead of the violet gradient (.shimmer-text-vivid), so the accent
-     words marked up with .shine-text are the only colored thing in the
-     paragraph and actually read as accents. Heavier weight plus a soft dark
-     halo keeps it crisp over the busy graffiti backdrop, and the wider
-     leading gives it the airy, deliberate feel of editorial body type
-     rather than a wall of text. */
+  /* Lead body copy — the hero subtitle and the About paragraph. Reads as
+     white rather than the violet .shimmer-text-vivid gradient, so the
+     accent words marked up with .shine-text stay the only colored thing in
+     the paragraph. But flat #fff looked like default browser text, so this
+     is pearl rather than paint: a white base with barely-there ice-blue and
+     lilac stops, and a slow specular sweep travelling across it, the way
+     light moves over silk or brushed chrome. The tints sit within a few
+     percent of white, so it never stops reading as white body copy — the
+     shimmer is depth, not color. Dark halo underneath keeps it crisp over
+     the busy graffiti backdrop; the wider leading gives it the airy,
+     deliberate feel of editorial body type rather than a wall of text.
+
+     Continuously animated, like .shine-text and .card-sheen: only two
+     elements on the site carry this class, so it's a bounded cost, not the
+     dozens-of-instances problem that got the other shimmer classes frozen. */
   .lead-text {
-    color: #ffffff;
-    font-weight: 600;
+    background: linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #dde9fa 10%,
+      #ffffff 22%,
+      #ffffff 30%,
+      #e7e2fb 42%,
+      #ffffff 54%,
+      #ffffff 62%,
+      #dbe8fb 74%,
+      #ffffff 86%,
+      #ffffff 100%
+    );
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 650;
     line-height: 1.75;
     letter-spacing: 0.005em;
-    text-shadow:
-      0 1px 2px rgba(3, 0, 20, 0.7),
-      0 0 20px rgba(3, 0, 20, 0.55);
+    /* drop-shadow, not text-shadow: with background-clip:text the glyph fill
+       is transparent and text-shadow paints *over* the clipped gradient,
+       which visibly greys the white out. A filter applies to the composited
+       result instead, so the halo lands behind the pearl where it belongs. */
+    filter:
+      drop-shadow(0 1px 2px rgba(3, 0, 20, 0.85))
+      drop-shadow(0 0 16px rgba(140, 185, 255, 0.3));
+    animation: lead-sheen 8s linear infinite;
+  }
+
+  @keyframes lead-sheen {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 260% 50%;
+    }
   }
 
   /* Accent words inside .lead-text. The shared .shine-text sweep peaks at
@@ -385,9 +423,10 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     font-weight: 800;
-    text-shadow:
-      0 1px 2px rgba(3, 0, 20, 0.75),
-      0 0 16px rgba(56, 189, 248, 0.35);
+    /* Same reason as .lead-text above — a text-shadow here would paint over
+       the clipped gradient and mute the cyan. The parent's drop-shadow
+       filter already gives these words their depth. */
+    text-shadow: none;
   }
 
   /* The site masthead wrapper — both lines ("GIØWAYZ" and "ZØNE") are now
@@ -646,6 +685,10 @@ body {
   .shine-text {
     animation: none;
     background-position: 0% 0;
+  }
+  .lead-text {
+    animation: none;
+    background-position: 0% 50%;
   }
   .glow-ring::before {
     animation: none;
